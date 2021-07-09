@@ -1,2 +1,2 @@
-# LearnOpenGL
-Tutorials from Learn OpenGL website
+# Learn OpenGL
+Tutorials from [Learn OpenGL website](https://learnopengl.com/)
