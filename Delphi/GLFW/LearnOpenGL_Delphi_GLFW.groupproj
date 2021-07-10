@@ -1,0 +1,204 @@
+﻿<Project xmlns="http://schemas.microsoft.com/developer/msbuild/2003">
+    <PropertyGroup>
+        <ProjectGuid>{E8A6CEA5-7318-4388-BB12-1E63A458D522}</ProjectGuid>
+    </PropertyGroup>
+    <ItemGroup>
+        <Projects Include="001-Learn-Hello World\L01_Hello_window.dproj">
+            <Dependencies/>
+        </Projects>
+        <Projects Include="002a-Learn-Hello Triangle\L02a_Hello_triangle.dproj">
+            <Dependencies/>
+        </Projects>
+        <Projects Include="002b-Learn-Hello retangle\L02b_Hello_retangle.dproj">
+            <Dependencies/>
+        </Projects>
+        <Projects Include="002e1-Learn-Two triangles\L02z1_Two_triangles.dproj">
+            <Dependencies/>
+        </Projects>
+        <Projects Include="002e2-Learn-Two Triangles in diferent vbo vao\L02z2_Two_triangles_vbo_vao.dproj">
+            <Dependencies/>
+        </Projects>
+        <Projects Include="002e3-Learn-Two Triangles in diferent vbo vao shaders\L02z3_Two_triangles_vbo_vao_shaders.dproj">
+            <Dependencies/>
+        </Projects>
+        <Projects Include="003a-Learn-Shaders\L03a_Shaders.dproj">
+            <Dependencies/>
+        </Projects>
+        <Projects Include="003b-Learn-Shaders - Uniforms\L03b_Uniforms.dproj">
+            <Dependencies/>
+        </Projects>
+        <Projects Include="003c-Learn-Shaders - More attributes\L03c_More_attributes.dproj">
+            <Dependencies/>
+        </Projects>
+        <Projects Include="003d-Learn-Shaders - Class\L03d_Shader_class.dproj">
+            <Dependencies/>
+        </Projects>
+        <Projects Include="003e1-Learn-Shaders - Triangle upside-down\L03z1_Triangle_upside_down.dproj">
+            <Dependencies/>
+        </Projects>
+        <Projects Include="003e2-Learn-Shaders - Vertex offset\L03z2_Vertex_offset.dproj">
+            <Dependencies/>
+        </Projects>
+        <Projects Include="003e3-Learn-Shaders - Vertex color\L03z3_Vertex_color.dproj">
+            <Dependencies/>
+        </Projects>
+        <Projects Include="004a-Learn-Textures\L04a_Textures.dproj">
+            <Dependencies/>
+        </Projects>
+        <Projects Include="004b-Learn-Textures - Mix w pixel color\L04b_Texture_mix_w_vertex_color.dproj">
+            <Dependencies/>
+        </Projects>
+    </ItemGroup>
+    <ProjectExtensions>
+        <Borland.Personality>Default.Personality.12</Borland.Personality>
+        <Borland.ProjectType/>
+        <BorlandProject>
+            <Default.Personality/>
+        </BorlandProject>
+    </ProjectExtensions>
+    <Target Name="L01_Hello_window">
+        <MSBuild Projects="001-Learn-Hello World\L01_Hello_window.dproj"/>
+    </Target>
+    <Target Name="L01_Hello_window:Clean">
+        <MSBuild Projects="001-Learn-Hello World\L01_Hello_window.dproj" Targets="Clean"/>
+    </Target>
+    <Target Name="L01_Hello_window:Make">
+        <MSBuild Projects="001-Learn-Hello World\L01_Hello_window.dproj" Targets="Make"/>
+    </Target>
+    <Target Name="L02a_Hello_triangle">
+        <MSBuild Projects="002a-Learn-Hello Triangle\L02a_Hello_triangle.dproj"/>
+    </Target>
+    <Target Name="L02a_Hello_triangle:Clean">
+        <MSBuild Projects="002a-Learn-Hello Triangle\L02a_Hello_triangle.dproj" Targets="Clean"/>
+    </Target>
+    <Target Name="L02a_Hello_triangle:Make">
+        <MSBuild Projects="002a-Learn-Hello Triangle\L02a_Hello_triangle.dproj" Targets="Make"/>
+    </Target>
+    <Target Name="L02b_Hello_retangle">
+        <MSBuild Projects="002b-Learn-Hello retangle\L02b_Hello_retangle.dproj"/>
+    </Target>
+    <Target Name="L02b_Hello_retangle:Clean">
+        <MSBuild Projects="002b-Learn-Hello retangle\L02b_Hello_retangle.dproj" Targets="Clean"/>
+    </Target>
+    <Target Name="L02b_Hello_retangle:Make">
+        <MSBuild Projects="002b-Learn-Hello retangle\L02b_Hello_retangle.dproj" Targets="Make"/>
+    </Target>
+    <Target Name="L02z1_Two_triangles">
+        <MSBuild Projects="002e1-Learn-Two triangles\L02z1_Two_triangles.dproj"/>
+    </Target>
+    <Target Name="L02z1_Two_triangles:Clean">
+        <MSBuild Projects="002e1-Learn-Two triangles\L02z1_Two_triangles.dproj" Targets="Clean"/>
+    </Target>
+    <Target Name="L02z1_Two_triangles:Make">
+        <MSBuild Projects="002e1-Learn-Two triangles\L02z1_Two_triangles.dproj" Targets="Make"/>
+    </Target>
+    <Target Name="L02z2_Two_triangles_vbo_vao">
+        <MSBuild Projects="002e2-Learn-Two Triangles in diferent vbo vao\L02z2_Two_triangles_vbo_vao.dproj"/>
+    </Target>
+    <Target Name="L02z2_Two_triangles_vbo_vao:Clean">
+        <MSBuild Projects="002e2-Learn-Two Triangles in diferent vbo vao\L02z2_Two_triangles_vbo_vao.dproj" Targets="Clean"/>
+    </Target>
+    <Target Name="L02z2_Two_triangles_vbo_vao:Make">
+        <MSBuild Projects="002e2-Learn-Two Triangles in diferent vbo vao\L02z2_Two_triangles_vbo_vao.dproj" Targets="Make"/>
+    </Target>
+    <Target Name="L02z3_Two_triangles_vbo_vao_shaders">
+        <MSBuild Projects="002e3-Learn-Two Triangles in diferent vbo vao shaders\L02z3_Two_triangles_vbo_vao_shaders.dproj"/>
+    </Target>
+    <Target Name="L02z3_Two_triangles_vbo_vao_shaders:Clean">
+        <MSBuild Projects="002e3-Learn-Two Triangles in diferent vbo vao shaders\L02z3_Two_triangles_vbo_vao_shaders.dproj" Targets="Clean"/>
+    </Target>
+    <Target Name="L02z3_Two_triangles_vbo_vao_shaders:Make">
+        <MSBuild Projects="002e3-Learn-Two Triangles in diferent vbo vao shaders\L02z3_Two_triangles_vbo_vao_shaders.dproj" Targets="Make"/>
+    </Target>
+    <Target Name="L03a_Shaders">
+        <MSBuild Projects="003a-Learn-Shaders\L03a_Shaders.dproj"/>
+    </Target>
+    <Target Name="L03a_Shaders:Clean">
+        <MSBuild Projects="003a-Learn-Shaders\L03a_Shaders.dproj" Targets="Clean"/>
+    </Target>
+    <Target Name="L03a_Shaders:Make">
+        <MSBuild Projects="003a-Learn-Shaders\L03a_Shaders.dproj" Targets="Make"/>
+    </Target>
+    <Target Name="L03b_Uniforms">
+        <MSBuild Projects="003b-Learn-Shaders - Uniforms\L03b_Uniforms.dproj"/>
+    </Target>
+    <Target Name="L03b_Uniforms:Clean">
+        <MSBuild Projects="003b-Learn-Shaders - Uniforms\L03b_Uniforms.dproj" Targets="Clean"/>
+    </Target>
+    <Target Name="L03b_Uniforms:Make">
+        <MSBuild Projects="003b-Learn-Shaders - Uniforms\L03b_Uniforms.dproj" Targets="Make"/>
+    </Target>
+    <Target Name="L03c_More_attributes">
+        <MSBuild Projects="003c-Learn-Shaders - More attributes\L03c_More_attributes.dproj"/>
+    </Target>
+    <Target Name="L03c_More_attributes:Clean">
+        <MSBuild Projects="003c-Learn-Shaders - More attributes\L03c_More_attributes.dproj" Targets="Clean"/>
+    </Target>
+    <Target Name="L03c_More_attributes:Make">
+        <MSBuild Projects="003c-Learn-Shaders - More attributes\L03c_More_attributes.dproj" Targets="Make"/>
+    </Target>
+    <Target Name="L03d_Shader_class">
+        <MSBuild Projects="003d-Learn-Shaders - Class\L03d_Shader_class.dproj"/>
+    </Target>
+    <Target Name="L03d_Shader_class:Clean">
+        <MSBuild Projects="003d-Learn-Shaders - Class\L03d_Shader_class.dproj" Targets="Clean"/>
+    </Target>
+    <Target Name="L03d_Shader_class:Make">
+        <MSBuild Projects="003d-Learn-Shaders - Class\L03d_Shader_class.dproj" Targets="Make"/>
+    </Target>
+    <Target Name="L03z1_Triangle_upside_down">
+        <MSBuild Projects="003e1-Learn-Shaders - Triangle upside-down\L03z1_Triangle_upside_down.dproj"/>
+    </Target>
+    <Target Name="L03z1_Triangle_upside_down:Clean">
+        <MSBuild Projects="003e1-Learn-Shaders - Triangle upside-down\L03z1_Triangle_upside_down.dproj" Targets="Clean"/>
+    </Target>
+    <Target Name="L03z1_Triangle_upside_down:Make">
+        <MSBuild Projects="003e1-Learn-Shaders - Triangle upside-down\L03z1_Triangle_upside_down.dproj" Targets="Make"/>
+    </Target>
+    <Target Name="L03z2_Vertex_offset">
+        <MSBuild Projects="003e2-Learn-Shaders - Vertex offset\L03z2_Vertex_offset.dproj"/>
+    </Target>
+    <Target Name="L03z2_Vertex_offset:Clean">
+        <MSBuild Projects="003e2-Learn-Shaders - Vertex offset\L03z2_Vertex_offset.dproj" Targets="Clean"/>
+    </Target>
+    <Target Name="L03z2_Vertex_offset:Make">
+        <MSBuild Projects="003e2-Learn-Shaders - Vertex offset\L03z2_Vertex_offset.dproj" Targets="Make"/>
+    </Target>
+    <Target Name="L03z3_Vertex_color">
+        <MSBuild Projects="003e3-Learn-Shaders - Vertex color\L03z3_Vertex_color.dproj"/>
+    </Target>
+    <Target Name="L03z3_Vertex_color:Clean">
+        <MSBuild Projects="003e3-Learn-Shaders - Vertex color\L03z3_Vertex_color.dproj" Targets="Clean"/>
+    </Target>
+    <Target Name="L03z3_Vertex_color:Make">
+        <MSBuild Projects="003e3-Learn-Shaders - Vertex color\L03z3_Vertex_color.dproj" Targets="Make"/>
+    </Target>
+    <Target Name="L04a_Textures">
+        <MSBuild Projects="004a-Learn-Textures\L04a_Textures.dproj"/>
+    </Target>
+    <Target Name="L04a_Textures:Clean">
+        <MSBuild Projects="004a-Learn-Textures\L04a_Textures.dproj" Targets="Clean"/>
+    </Target>
+    <Target Name="L04a_Textures:Make">
+        <MSBuild Projects="004a-Learn-Textures\L04a_Textures.dproj" Targets="Make"/>
+    </Target>
+    <Target Name="L04b_Texture_mix_w_vertex_color">
+        <MSBuild Projects="004b-Learn-Textures - Mix w pixel color\L04b_Texture_mix_w_vertex_color.dproj"/>
+    </Target>
+    <Target Name="L04b_Texture_mix_w_vertex_color:Clean">
+        <MSBuild Projects="004b-Learn-Textures - Mix w pixel color\L04b_Texture_mix_w_vertex_color.dproj" Targets="Clean"/>
+    </Target>
+    <Target Name="L04b_Texture_mix_w_vertex_color:Make">
+        <MSBuild Projects="004b-Learn-Textures - Mix w pixel color\L04b_Texture_mix_w_vertex_color.dproj" Targets="Make"/>
+    </Target>
+    <Target Name="Build">
+        <CallTarget Targets="L01_Hello_window;L02a_Hello_triangle;L02b_Hello_retangle;L02z1_Two_triangles;L02z2_Two_triangles_vbo_vao;L02z3_Two_triangles_vbo_vao_shaders;L03a_Shaders;L03b_Uniforms;L03c_More_attributes;L03d_Shader_class;L03z1_Triangle_upside_down;L03z2_Vertex_offset;L03z3_Vertex_color;L04a_Textures;L04b_Texture_mix_w_vertex_color"/>
+    </Target>
+    <Target Name="Clean">
+        <CallTarget Targets="L01_Hello_window:Clean;L02a_Hello_triangle:Clean;L02b_Hello_retangle:Clean;L02z1_Two_triangles:Clean;L02z2_Two_triangles_vbo_vao:Clean;L02z3_Two_triangles_vbo_vao_shaders:Clean;L03a_Shaders:Clean;L03b_Uniforms:Clean;L03c_More_attributes:Clean;L03d_Shader_class:Clean;L03z1_Triangle_upside_down:Clean;L03z2_Vertex_offset:Clean;L03z3_Vertex_color:Clean;L04a_Textures:Clean;L04b_Texture_mix_w_vertex_color:Clean"/>
+    </Target>
+    <Target Name="Make">
+        <CallTarget Targets="L01_Hello_window:Make;L02a_Hello_triangle:Make;L02b_Hello_retangle:Make;L02z1_Two_triangles:Make;L02z2_Two_triangles_vbo_vao:Make;L02z3_Two_triangles_vbo_vao_shaders:Make;L03a_Shaders:Make;L03b_Uniforms:Make;L03c_More_attributes:Make;L03d_Shader_class:Make;L03z1_Triangle_upside_down:Make;L03z2_Vertex_offset:Make;L03z3_Vertex_color:Make;L04a_Textures:Make;L04b_Texture_mix_w_vertex_color:Make"/>
+    </Target>
+    <Import Project="$(BDS)\Bin\CodeGear.Group.Targets" Condition="Exists('$(BDS)\Bin\CodeGear.Group.Targets')"/>
+</Project>
