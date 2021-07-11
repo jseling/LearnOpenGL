@@ -48,6 +48,21 @@
         <Projects Include="004b-Learn-Textures - Mix w pixel color\L04b_Texture_mix_w_vertex_color.dproj">
             <Dependencies/>
         </Projects>
+        <Projects Include="004c-Learn-Textures - Texture units\L04c_Texture_units.dproj">
+            <Dependencies/>
+        </Projects>
+        <Projects Include="004e1-Learn-Textures - Reverse\L04z1_Reverse.dproj">
+            <Dependencies/>
+        </Projects>
+        <Projects Include="004e2-Learn-Textures - Wrapping\L04z2_Wrapping.dproj">
+            <Dependencies/>
+        </Projects>
+        <Projects Include="004e3-Learn-Textures - Filtering nearest\L04z3_Filtering_nearest.dproj">
+            <Dependencies/>
+        </Projects>
+        <Projects Include="004e4-Learn-Textures - Uniform mix\L04z4_Uniform_mix.dproj">
+            <Dependencies/>
+        </Projects>
     </ItemGroup>
     <ProjectExtensions>
         <Borland.Personality>Default.Personality.12</Borland.Personality>
@@ -191,14 +206,59 @@
     <Target Name="L04b_Texture_mix_w_vertex_color:Make">
         <MSBuild Projects="004b-Learn-Textures - Mix w pixel color\L04b_Texture_mix_w_vertex_color.dproj" Targets="Make"/>
     </Target>
+    <Target Name="L04c_Texture_units">
+        <MSBuild Projects="004c-Learn-Textures - Texture units\L04c_Texture_units.dproj"/>
+    </Target>
+    <Target Name="L04c_Texture_units:Clean">
+        <MSBuild Projects="004c-Learn-Textures - Texture units\L04c_Texture_units.dproj" Targets="Clean"/>
+    </Target>
+    <Target Name="L04c_Texture_units:Make">
+        <MSBuild Projects="004c-Learn-Textures - Texture units\L04c_Texture_units.dproj" Targets="Make"/>
+    </Target>
+    <Target Name="L04z1_Reverse">
+        <MSBuild Projects="004e1-Learn-Textures - Reverse\L04z1_Reverse.dproj"/>
+    </Target>
+    <Target Name="L04z1_Reverse:Clean">
+        <MSBuild Projects="004e1-Learn-Textures - Reverse\L04z1_Reverse.dproj" Targets="Clean"/>
+    </Target>
+    <Target Name="L04z1_Reverse:Make">
+        <MSBuild Projects="004e1-Learn-Textures - Reverse\L04z1_Reverse.dproj" Targets="Make"/>
+    </Target>
+    <Target Name="L04z2_Wrapping">
+        <MSBuild Projects="004e2-Learn-Textures - Wrapping\L04z2_Wrapping.dproj"/>
+    </Target>
+    <Target Name="L04z2_Wrapping:Clean">
+        <MSBuild Projects="004e2-Learn-Textures - Wrapping\L04z2_Wrapping.dproj" Targets="Clean"/>
+    </Target>
+    <Target Name="L04z2_Wrapping:Make">
+        <MSBuild Projects="004e2-Learn-Textures - Wrapping\L04z2_Wrapping.dproj" Targets="Make"/>
+    </Target>
+    <Target Name="L04z3_Filtering_nearest">
+        <MSBuild Projects="004e3-Learn-Textures - Filtering nearest\L04z3_Filtering_nearest.dproj"/>
+    </Target>
+    <Target Name="L04z3_Filtering_nearest:Clean">
+        <MSBuild Projects="004e3-Learn-Textures - Filtering nearest\L04z3_Filtering_nearest.dproj" Targets="Clean"/>
+    </Target>
+    <Target Name="L04z3_Filtering_nearest:Make">
+        <MSBuild Projects="004e3-Learn-Textures - Filtering nearest\L04z3_Filtering_nearest.dproj" Targets="Make"/>
+    </Target>
+    <Target Name="L04z4_Uniform_mix">
+        <MSBuild Projects="004e4-Learn-Textures - Uniform mix\L04z4_Uniform_mix.dproj"/>
+    </Target>
+    <Target Name="L04z4_Uniform_mix:Clean">
+        <MSBuild Projects="004e4-Learn-Textures - Uniform mix\L04z4_Uniform_mix.dproj" Targets="Clean"/>
+    </Target>
+    <Target Name="L04z4_Uniform_mix:Make">
+        <MSBuild Projects="004e4-Learn-Textures - Uniform mix\L04z4_Uniform_mix.dproj" Targets="Make"/>
+    </Target>
     <Target Name="Build">
-        <CallTarget Targets="L01_Hello_window;L02a_Hello_triangle;L02b_Hello_retangle;L02z1_Two_triangles;L02z2_Two_triangles_vbo_vao;L02z3_Two_triangles_vbo_vao_shaders;L03a_Shaders;L03b_Uniforms;L03c_More_attributes;L03d_Shader_class;L03z1_Triangle_upside_down;L03z2_Vertex_offset;L03z3_Vertex_color;L04a_Textures;L04b_Texture_mix_w_vertex_color"/>
+        <CallTarget Targets="L01_Hello_window;L02a_Hello_triangle;L02b_Hello_retangle;L02z1_Two_triangles;L02z2_Two_triangles_vbo_vao;L02z3_Two_triangles_vbo_vao_shaders;L03a_Shaders;L03b_Uniforms;L03c_More_attributes;L03d_Shader_class;L03z1_Triangle_upside_down;L03z2_Vertex_offset;L03z3_Vertex_color;L04a_Textures;L04b_Texture_mix_w_vertex_color;L04c_Texture_units;L04z1_Reverse;L04z2_Wrapping;L04z3_Filtering_nearest;L04z4_Uniform_mix"/>
     </Target>
     <Target Name="Clean">
-        <CallTarget Targets="L01_Hello_window:Clean;L02a_Hello_triangle:Clean;L02b_Hello_retangle:Clean;L02z1_Two_triangles:Clean;L02z2_Two_triangles_vbo_vao:Clean;L02z3_Two_triangles_vbo_vao_shaders:Clean;L03a_Shaders:Clean;L03b_Uniforms:Clean;L03c_More_attributes:Clean;L03d_Shader_class:Clean;L03z1_Triangle_upside_down:Clean;L03z2_Vertex_offset:Clean;L03z3_Vertex_color:Clean;L04a_Textures:Clean;L04b_Texture_mix_w_vertex_color:Clean"/>
+        <CallTarget Targets="L01_Hello_window:Clean;L02a_Hello_triangle:Clean;L02b_Hello_retangle:Clean;L02z1_Two_triangles:Clean;L02z2_Two_triangles_vbo_vao:Clean;L02z3_Two_triangles_vbo_vao_shaders:Clean;L03a_Shaders:Clean;L03b_Uniforms:Clean;L03c_More_attributes:Clean;L03d_Shader_class:Clean;L03z1_Triangle_upside_down:Clean;L03z2_Vertex_offset:Clean;L03z3_Vertex_color:Clean;L04a_Textures:Clean;L04b_Texture_mix_w_vertex_color:Clean;L04c_Texture_units:Clean;L04z1_Reverse:Clean;L04z2_Wrapping:Clean;L04z3_Filtering_nearest:Clean;L04z4_Uniform_mix:Clean"/>
     </Target>
     <Target Name="Make">
-        <CallTarget Targets="L01_Hello_window:Make;L02a_Hello_triangle:Make;L02b_Hello_retangle:Make;L02z1_Two_triangles:Make;L02z2_Two_triangles_vbo_vao:Make;L02z3_Two_triangles_vbo_vao_shaders:Make;L03a_Shaders:Make;L03b_Uniforms:Make;L03c_More_attributes:Make;L03d_Shader_class:Make;L03z1_Triangle_upside_down:Make;L03z2_Vertex_offset:Make;L03z3_Vertex_color:Make;L04a_Textures:Make;L04b_Texture_mix_w_vertex_color:Make"/>
+        <CallTarget Targets="L01_Hello_window:Make;L02a_Hello_triangle:Make;L02b_Hello_retangle:Make;L02z1_Two_triangles:Make;L02z2_Two_triangles_vbo_vao:Make;L02z3_Two_triangles_vbo_vao_shaders:Make;L03a_Shaders:Make;L03b_Uniforms:Make;L03c_More_attributes:Make;L03d_Shader_class:Make;L03z1_Triangle_upside_down:Make;L03z2_Vertex_offset:Make;L03z3_Vertex_color:Make;L04a_Textures:Make;L04b_Texture_mix_w_vertex_color:Make;L04c_Texture_units:Make;L04z1_Reverse:Make;L04z2_Wrapping:Make;L04z3_Filtering_nearest:Make;L04z4_Uniform_mix:Make"/>
     </Target>
     <Import Project="$(BDS)\Bin\CodeGear.Group.Targets" Condition="Exists('$(BDS)\Bin\CodeGear.Group.Targets')"/>
 </Project>
