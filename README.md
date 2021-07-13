@@ -1,7 +1,17 @@
 # Learn OpenGL
 Tutorials from [Learn OpenGL website](https://learnopengl.com/)
 
+Outra execução:
+https://github.com/neslib/DelphiLearnOpenGL/wiki
 
+GLFW
+https://github.com/neslib/DelphiGlfw
+
+STBImage
+https://github.com/neslib/DelphiStb/tree/master/Stb
+
+Assimp
+https://github.com/BrokenGamesUG/delphi3d-engine/tree/main/Engine/assimp
 
 ## Ideias
 
