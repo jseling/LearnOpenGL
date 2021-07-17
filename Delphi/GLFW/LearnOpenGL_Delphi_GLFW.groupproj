@@ -87,6 +87,15 @@
         <Projects Include="006d-Learn-Coordinate systems - More cubes\L06d_More_cubes.dproj">
             <Dependencies/>
         </Projects>
+        <Projects Include="006e1-Learn-Coordinate systems - FoV Aspect ratio\L06z1_FoV_Aspect_ratio.dproj">
+            <Dependencies/>
+        </Projects>
+        <Projects Include="006e2-Learn-Coordinate systems - View matrix\L06z2_View_matrix.dproj">
+            <Dependencies/>
+        </Projects>
+        <Projects Include="006e3-Learn-Coordinate systems - Some spins\L06z3_Some_spins.dproj">
+            <Dependencies/>
+        </Projects>
     </ItemGroup>
     <ProjectExtensions>
         <Borland.Personality>Default.Personality.12</Borland.Personality>
@@ -347,14 +356,41 @@
     <Target Name="L06d_More_cubes:Make">
         <MSBuild Projects="006d-Learn-Coordinate systems - More cubes\L06d_More_cubes.dproj" Targets="Make"/>
     </Target>
+    <Target Name="L06z1_FoV_Aspect_ratio">
+        <MSBuild Projects="006e1-Learn-Coordinate systems - FoV Aspect ratio\L06z1_FoV_Aspect_ratio.dproj"/>
+    </Target>
+    <Target Name="L06z1_FoV_Aspect_ratio:Clean">
+        <MSBuild Projects="006e1-Learn-Coordinate systems - FoV Aspect ratio\L06z1_FoV_Aspect_ratio.dproj" Targets="Clean"/>
+    </Target>
+    <Target Name="L06z1_FoV_Aspect_ratio:Make">
+        <MSBuild Projects="006e1-Learn-Coordinate systems - FoV Aspect ratio\L06z1_FoV_Aspect_ratio.dproj" Targets="Make"/>
+    </Target>
+    <Target Name="L06z2_View_matrix">
+        <MSBuild Projects="006e2-Learn-Coordinate systems - View matrix\L06z2_View_matrix.dproj"/>
+    </Target>
+    <Target Name="L06z2_View_matrix:Clean">
+        <MSBuild Projects="006e2-Learn-Coordinate systems - View matrix\L06z2_View_matrix.dproj" Targets="Clean"/>
+    </Target>
+    <Target Name="L06z2_View_matrix:Make">
+        <MSBuild Projects="006e2-Learn-Coordinate systems - View matrix\L06z2_View_matrix.dproj" Targets="Make"/>
+    </Target>
+    <Target Name="L06z3_Some_spins">
+        <MSBuild Projects="006e3-Learn-Coordinate systems - Some spins\L06z3_Some_spins.dproj"/>
+    </Target>
+    <Target Name="L06z3_Some_spins:Clean">
+        <MSBuild Projects="006e3-Learn-Coordinate systems - Some spins\L06z3_Some_spins.dproj" Targets="Clean"/>
+    </Target>
+    <Target Name="L06z3_Some_spins:Make">
+        <MSBuild Projects="006e3-Learn-Coordinate systems - Some spins\L06z3_Some_spins.dproj" Targets="Make"/>
+    </Target>
     <Target Name="Build">
-        <CallTarget Targets="L01_Hello_window;L02a_Hello_triangle;L02b_Hello_retangle;L02z1_Two_triangles;L02z2_Two_triangles_vbo_vao;L02z3_Two_triangles_vbo_vao_shaders;L03a_Shaders;L03b_Uniforms;L03c_More_attributes;L03d_Shader_class;L03z1_Triangle_upside_down;L03z2_Vertex_offset;L03z3_Vertex_color;L04a_Textures;L04b_Texture_mix_w_vertex_color;L04c_Texture_units;L04z1_Reverse;L04z2_Wrapping;L04z3_Filtering_nearest;L04z4_Uniform_mix;L05a_Transformations;L05b_Transformation_rotate;L05z1_Rotate_translate;L05z2_Two_draws;L06a_Coordinate_systems;L06b_3D_cube;L06c_zBuffer;L06d_More_cubes"/>
+        <CallTarget Targets="L01_Hello_window;L02a_Hello_triangle;L02b_Hello_retangle;L02z1_Two_triangles;L02z2_Two_triangles_vbo_vao;L02z3_Two_triangles_vbo_vao_shaders;L03a_Shaders;L03b_Uniforms;L03c_More_attributes;L03d_Shader_class;L03z1_Triangle_upside_down;L03z2_Vertex_offset;L03z3_Vertex_color;L04a_Textures;L04b_Texture_mix_w_vertex_color;L04c_Texture_units;L04z1_Reverse;L04z2_Wrapping;L04z3_Filtering_nearest;L04z4_Uniform_mix;L05a_Transformations;L05b_Transformation_rotate;L05z1_Rotate_translate;L05z2_Two_draws;L06a_Coordinate_systems;L06b_3D_cube;L06c_zBuffer;L06d_More_cubes;L06z1_FoV_Aspect_ratio;L06z2_View_matrix;L06z3_Some_spins"/>
     </Target>
     <Target Name="Clean">
-        <CallTarget Targets="L01_Hello_window:Clean;L02a_Hello_triangle:Clean;L02b_Hello_retangle:Clean;L02z1_Two_triangles:Clean;L02z2_Two_triangles_vbo_vao:Clean;L02z3_Two_triangles_vbo_vao_shaders:Clean;L03a_Shaders:Clean;L03b_Uniforms:Clean;L03c_More_attributes:Clean;L03d_Shader_class:Clean;L03z1_Triangle_upside_down:Clean;L03z2_Vertex_offset:Clean;L03z3_Vertex_color:Clean;L04a_Textures:Clean;L04b_Texture_mix_w_vertex_color:Clean;L04c_Texture_units:Clean;L04z1_Reverse:Clean;L04z2_Wrapping:Clean;L04z3_Filtering_nearest:Clean;L04z4_Uniform_mix:Clean;L05a_Transformations:Clean;L05b_Transformation_rotate:Clean;L05z1_Rotate_translate:Clean;L05z2_Two_draws:Clean;L06a_Coordinate_systems:Clean;L06b_3D_cube:Clean;L06c_zBuffer:Clean;L06d_More_cubes:Clean"/>
+        <CallTarget Targets="L01_Hello_window:Clean;L02a_Hello_triangle:Clean;L02b_Hello_retangle:Clean;L02z1_Two_triangles:Clean;L02z2_Two_triangles_vbo_vao:Clean;L02z3_Two_triangles_vbo_vao_shaders:Clean;L03a_Shaders:Clean;L03b_Uniforms:Clean;L03c_More_attributes:Clean;L03d_Shader_class:Clean;L03z1_Triangle_upside_down:Clean;L03z2_Vertex_offset:Clean;L03z3_Vertex_color:Clean;L04a_Textures:Clean;L04b_Texture_mix_w_vertex_color:Clean;L04c_Texture_units:Clean;L04z1_Reverse:Clean;L04z2_Wrapping:Clean;L04z3_Filtering_nearest:Clean;L04z4_Uniform_mix:Clean;L05a_Transformations:Clean;L05b_Transformation_rotate:Clean;L05z1_Rotate_translate:Clean;L05z2_Two_draws:Clean;L06a_Coordinate_systems:Clean;L06b_3D_cube:Clean;L06c_zBuffer:Clean;L06d_More_cubes:Clean;L06z1_FoV_Aspect_ratio:Clean;L06z2_View_matrix:Clean;L06z3_Some_spins:Clean"/>
     </Target>
     <Target Name="Make">
-        <CallTarget Targets="L01_Hello_window:Make;L02a_Hello_triangle:Make;L02b_Hello_retangle:Make;L02z1_Two_triangles:Make;L02z2_Two_triangles_vbo_vao:Make;L02z3_Two_triangles_vbo_vao_shaders:Make;L03a_Shaders:Make;L03b_Uniforms:Make;L03c_More_attributes:Make;L03d_Shader_class:Make;L03z1_Triangle_upside_down:Make;L03z2_Vertex_offset:Make;L03z3_Vertex_color:Make;L04a_Textures:Make;L04b_Texture_mix_w_vertex_color:Make;L04c_Texture_units:Make;L04z1_Reverse:Make;L04z2_Wrapping:Make;L04z3_Filtering_nearest:Make;L04z4_Uniform_mix:Make;L05a_Transformations:Make;L05b_Transformation_rotate:Make;L05z1_Rotate_translate:Make;L05z2_Two_draws:Make;L06a_Coordinate_systems:Make;L06b_3D_cube:Make;L06c_zBuffer:Make;L06d_More_cubes:Make"/>
+        <CallTarget Targets="L01_Hello_window:Make;L02a_Hello_triangle:Make;L02b_Hello_retangle:Make;L02z1_Two_triangles:Make;L02z2_Two_triangles_vbo_vao:Make;L02z3_Two_triangles_vbo_vao_shaders:Make;L03a_Shaders:Make;L03b_Uniforms:Make;L03c_More_attributes:Make;L03d_Shader_class:Make;L03z1_Triangle_upside_down:Make;L03z2_Vertex_offset:Make;L03z3_Vertex_color:Make;L04a_Textures:Make;L04b_Texture_mix_w_vertex_color:Make;L04c_Texture_units:Make;L04z1_Reverse:Make;L04z2_Wrapping:Make;L04z3_Filtering_nearest:Make;L04z4_Uniform_mix:Make;L05a_Transformations:Make;L05b_Transformation_rotate:Make;L05z1_Rotate_translate:Make;L05z2_Two_draws:Make;L06a_Coordinate_systems:Make;L06b_3D_cube:Make;L06c_zBuffer:Make;L06d_More_cubes:Make;L06z1_FoV_Aspect_ratio:Make;L06z2_View_matrix:Make;L06z3_Some_spins:Make"/>
     </Target>
     <Import Project="$(BDS)\Bin\CodeGear.Group.Targets" Condition="Exists('$(BDS)\Bin\CodeGear.Group.Targets')"/>
 </Project>
