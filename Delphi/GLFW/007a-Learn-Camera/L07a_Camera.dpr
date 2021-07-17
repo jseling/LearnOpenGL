@@ -1,4 +1,4 @@
-program L06z3_Some_spins;
+program L07a_Camera;
 
 uses
   System.StartUpCopy,
@@ -100,39 +100,10 @@ var
   i: integer;
   APos: array [0..2] of Single;
   angle: single;
-  vx, vz: Single;
 
-  procedure ProcessInput(wdw: PGLFWwindow);
-  begin
-    if (glfwGetKey(wdw, GLFW_KEY_ESCAPE) = GLFW_PRESS) then
-        glfwSetWindowShouldClose(wdw, GLFW_TRUE);
-
-    if (glfwGetKey(wdw, GLFW_KEY_SPACE) = GLFW_PRESS) then
-    begin
-      vx := 0;
-      vz := -3;
-    end;
-
-    if (glfwGetKey(wdw, GLFW_KEY_UP) = GLFW_PRESS) then
-    begin
-        vz := vz + 0.01;
-    end;
-
-    if (glfwGetKey(wdw, GLFW_KEY_DOWN) = GLFW_PRESS) then
-    begin
-        vz := vz - 0.01;
-    end;
-
-    if (glfwGetKey(wdw, GLFW_KEY_RIGHT) = GLFW_PRESS) then
-    begin
-        vx := vx - 0.01;
-    end;
-
-    if (glfwGetKey(wdw, GLFW_KEY_LEFT) = GLFW_PRESS) then
-    begin
-        vx := vx + 0.01;
-    end;
-  end;
+  radius,
+  camX,
+  camZ: single;
 begin
   glfwSetErrorCallback(ErrorCallback);
 
@@ -232,13 +203,19 @@ begin
   proj := proj * TMatrix3D.CreatePerspectiveFovRH(DegToRad(45), 800/600, 0.1, 100);
   AShader.SetUniformMatrix4fv('projection', proj);
 
-  vx := 0;
-  vz := -3;
+  radius := 10;
 
   glEnable(GL_DEPTH_TEST);
   while (glfwWindowShouldClose(Window) = 0) do
   begin
-    ProcessInput(Window);
+    camX := sin(glfwGetTime()) * radius;
+    camZ := cos(glfwGetTime()) * radius;
+
+    view := TMatrix3D.CreateLookAtRH(TPoint3D.Create(camX, 0, camZ),  //origin
+                                     TPoint3D.Create(0, 0, 0), //target
+                                     TPoint3D.Create(0, 1, 0)); //up
+
+    AShader.SetUniformMatrix4fv('view', view);
 
     glfwGetFramebufferSize(Window, @Width, @Height);
 
@@ -249,11 +226,6 @@ begin
 
     glBindVertexArray(VAO);
 
-    view := TMatrix3D.Identity;
-    view := view * TMatrix3D.CreateTranslation(TPoint3D.Create(vx, 0, vz));
-    AShader.SetUniformMatrix4fv('view', view);
-
-    view := TMatrix3D.CreateLookAtRH(;
 
     for i:=0 to High(CUBE_POSITIONS)-1 do
     begin
@@ -262,10 +234,6 @@ begin
       APos[2] := CUBE_POSITIONS[i][2];
 
       angle := 20 * i;
-
-      if (i mod 3 = 0) then
-        angle := glfwGetTime() * 25;
-
       model := TMatrix3D.CreateRotation(TPoint3d.Create(1.0, 0.3, 0.5),  DegToRad(angle));
       model := model * TMatrix3D.CreateTranslation(TPoint3D.Create(APos[0], APos[1], APos[2]));
       AShader.SetUniformMatrix4fv('model', model);

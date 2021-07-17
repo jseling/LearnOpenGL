@@ -1,4 +1,4 @@
-program L06z3_Some_spins;
+program L07b_Walk_around;
 
 uses
   System.StartUpCopy,
@@ -100,37 +100,38 @@ var
   i: integer;
   APos: array [0..2] of Single;
   angle: single;
-  vx, vz: Single;
+
+  cameraPos,
+  cameraFront,
+  cameraUp: TPoint3D;
+
+  cameraSpeed : single;
 
   procedure ProcessInput(wdw: PGLFWwindow);
   begin
     if (glfwGetKey(wdw, GLFW_KEY_ESCAPE) = GLFW_PRESS) then
         glfwSetWindowShouldClose(wdw, GLFW_TRUE);
 
-    if (glfwGetKey(wdw, GLFW_KEY_SPACE) = GLFW_PRESS) then
+
+    cameraSpeed := 0.05;
+    if (glfwGetKey(wdw, GLFW_KEY_W) = GLFW_PRESS) then
     begin
-      vx := 0;
-      vz := -3;
+       cameraPos := cameraPos + (cameraSpeed * cameraFront);
     end;
 
-    if (glfwGetKey(wdw, GLFW_KEY_UP) = GLFW_PRESS) then
+    if (glfwGetKey(wdw, GLFW_KEY_S) = GLFW_PRESS) then
     begin
-        vz := vz + 0.01;
+       cameraPos := cameraPos - (cameraSpeed * cameraFront);
     end;
 
-    if (glfwGetKey(wdw, GLFW_KEY_DOWN) = GLFW_PRESS) then
+    if (glfwGetKey(wdw, GLFW_KEY_A) = GLFW_PRESS) then
     begin
-        vz := vz - 0.01;
+       cameraPos := cameraPos - (cameraFront.CrossProduct(cameraUp).Normalize * cameraSpeed);
     end;
 
-    if (glfwGetKey(wdw, GLFW_KEY_RIGHT) = GLFW_PRESS) then
+    if (glfwGetKey(wdw, GLFW_KEY_D) = GLFW_PRESS) then
     begin
-        vx := vx - 0.01;
-    end;
-
-    if (glfwGetKey(wdw, GLFW_KEY_LEFT) = GLFW_PRESS) then
-    begin
-        vx := vx + 0.01;
+       cameraPos := cameraPos + (cameraFront.CrossProduct(cameraUp).Normalize * cameraSpeed);
     end;
   end;
 begin
@@ -232,13 +233,16 @@ begin
   proj := proj * TMatrix3D.CreatePerspectiveFovRH(DegToRad(45), 800/600, 0.1, 100);
   AShader.SetUniformMatrix4fv('projection', proj);
 
-  vx := 0;
-  vz := -3;
+  cameraPos := TPoint3D.Create(0.0, 0.0,  3.0);
+  cameraFront := TPoint3D.Create(0.0, 0.0, -1.0);
+  cameraUp := TPoint3D.Create(0.0, 1.0,  0.0);
 
   glEnable(GL_DEPTH_TEST);
   while (glfwWindowShouldClose(Window) = 0) do
   begin
     ProcessInput(Window);
+    view := TMatrix3D.CreateLookAtRH(cameraPos, cameraPos + cameraFront, cameraUp);
+    AShader.SetUniformMatrix4fv('view', view);
 
     glfwGetFramebufferSize(Window, @Width, @Height);
 
@@ -249,11 +253,6 @@ begin
 
     glBindVertexArray(VAO);
 
-    view := TMatrix3D.Identity;
-    view := view * TMatrix3D.CreateTranslation(TPoint3D.Create(vx, 0, vz));
-    AShader.SetUniformMatrix4fv('view', view);
-
-    view := TMatrix3D.CreateLookAtRH(;
 
     for i:=0 to High(CUBE_POSITIONS)-1 do
     begin
@@ -262,10 +261,6 @@ begin
       APos[2] := CUBE_POSITIONS[i][2];
 
       angle := 20 * i;
-
-      if (i mod 3 = 0) then
-        angle := glfwGetTime() * 25;
-
       model := TMatrix3D.CreateRotation(TPoint3d.Create(1.0, 0.3, 0.5),  DegToRad(angle));
       model := model * TMatrix3D.CreateTranslation(TPoint3D.Create(APos[0], APos[1], APos[2]));
       AShader.SetUniformMatrix4fv('model', model);
