@@ -253,8 +253,6 @@ begin
     view := view * TMatrix3D.CreateTranslation(TPoint3D.Create(vx, 0, vz));
     AShader.SetUniformMatrix4fv('view', view);
 
-    view := TMatrix3D.CreateLookAtRH(;
-
     for i:=0 to High(CUBE_POSITIONS) do
     begin
       APos[0] := CUBE_POSITIONS[i][0];
