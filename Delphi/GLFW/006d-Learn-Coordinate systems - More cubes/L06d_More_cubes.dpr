@@ -59,17 +59,17 @@ const
   );
 
 const
-  CUBE_POSITIONS: array [0..9] of array [0..2] of Single = (
-    ( 0.0,  0.0,  0.0),
-    ( 2.0,  5.0, -15.0),
-    (-1.5, -2.2, -2.5),
-    (-3.8, -2.0, -12.3),
-    ( 2.4, -0.4, -3.5),
-    (-1.7,  3.0, -7.5),
-    ( 1.3, -2.0, -2.5),
-    ( 1.5,  2.0, -2.5),
-    ( 1.5,  0.2, -1.5),
-    (-1.3,  1.0, -1.5)
+  CUBE_POSITIONS: array [0..9] of TPoint3D = (
+    (X: 0.0; Y: 0.0; Z: 0.0),
+    (X: 2.0; Y: 5.0; Z:-15.0),
+    (X:-1.5; Y:-2.2; Z:-2.5),
+    (X:-3.8; Y:-2.0; Z:-12.3),
+    (X: 2.4; Y:-0.4; Z:-3.5),
+    (X:-1.7; Y: 3.0; Z:-7.5),
+    (X: 1.3; Y:-2.0; Z:-2.5),
+    (X: 1.5; Y: 2.0; Z:-2.5),
+    (X: 1.5; Y: 0.2; Z:-1.5),
+    (X:-1.3; Y: 1.0; Z:-1.5)
   );
 
 procedure ErrorCallback(error: Integer; const description: PAnsiChar); cdecl;
@@ -98,7 +98,6 @@ var
 
   model, view, proj: TMatrix3D;
   i: integer;
-  APos: array [0..2] of Single;
   angle: single;
 begin
   glfwSetErrorCallback(ErrorCallback);
@@ -218,15 +217,11 @@ begin
     glBindVertexArray(VAO);
 
 
-    for i:=0 to High(CUBE_POSITIONS)-1 do
+    for i:=0 to High(CUBE_POSITIONS) do
     begin
-      APos[0] := CUBE_POSITIONS[i][0];
-      APos[1] := CUBE_POSITIONS[i][1];
-      APos[2] := CUBE_POSITIONS[i][2];
-
       angle := 20 * i;
       model := TMatrix3D.CreateRotation(TPoint3d.Create(1.0, 0.3, 0.5),  DegToRad(angle));
-      model := model * TMatrix3D.CreateTranslation(TPoint3D.Create(APos[0], APos[1], APos[2]));
+      model := model * TMatrix3D.CreateTranslation(CUBE_POSITIONS[i]);
       AShader.SetUniformMatrix4fv('model', model);
 
       glDrawArrays(GL_TRIANGLES, 0, 36);

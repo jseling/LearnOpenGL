@@ -255,7 +255,7 @@ begin
 
     view := TMatrix3D.CreateLookAtRH(;
 
-    for i:=0 to High(CUBE_POSITIONS)-1 do
+    for i:=0 to High(CUBE_POSITIONS) do
     begin
       APos[0] := CUBE_POSITIONS[i][0];
       APos[1] := CUBE_POSITIONS[i][1];

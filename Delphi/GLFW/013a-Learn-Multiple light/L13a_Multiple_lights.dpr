@@ -1,4 +1,4 @@
-program L12d_Soft_edges;
+program L13a_Multiple_lights;
 
 uses
   System.StartUpCopy,
@@ -61,17 +61,25 @@ const
   );
 
 const
-  CUBE_POSITIONS: array [0..9] of array [0..2] of Single = (
-    ( 0.0,  0.0,  0.0),
-    ( 2.0,  5.0, -15.0),
-    (-1.5, -2.2, -2.5),
-    (-3.8, -2.0, -12.3),
-    ( 2.4, -0.4, -3.5),
-    (-1.7,  3.0, -7.5),
-    ( 1.3, -2.0, -2.5),
-    ( 1.5,  2.0, -2.5),
-    ( 1.5,  0.2, -1.5),
-    (-1.3,  1.0, -1.5)
+  CUBE_POSITIONS: array [0..9] of TPoint3D = (
+    (X: 0.0; Y: 0.0; Z: 0.0),
+    (X: 2.0; Y: 5.0; Z:-15.0),
+    (X:-1.5; Y:-2.2; Z:-2.5),
+    (X:-3.8; Y:-2.0; Z:-12.3),
+    (X: 2.4; Y:-0.4; Z:-3.5),
+    (X:-1.7; Y: 3.0; Z:-7.5),
+    (X: 1.3; Y:-2.0; Z:-2.5),
+    (X: 1.5; Y: 2.0; Z:-2.5),
+    (X: 1.5; Y: 0.2; Z:-1.5),
+    (X:-1.3; Y: 1.0; Z:-1.5)
+  );
+
+const
+  LIGHT_POSITIONS: array [0..3] of TPoint3D = (
+    (X:  0.7; Y:  0.2; Z: 2.0),
+    (X:  2.3; Y: -3.3; Z: -4.0),
+    (X: -4.0; Y:  2.0; Z: -12.0),
+    (X:  0.0; Y:  0.0; Z: -3.0)
   );
 
 
@@ -184,14 +192,8 @@ var
 
   diffuseMap, specularMap: GLuint;
 
-  lightPos: TPoint3D;
-//  lightColor,
-  lightDifCalc,
-  lightAmbCalc: TPoint3D;
-
   i: integer;
-  APos: array [0..2] of Single;
-  angle: single;  
+  angle: single;
 begin
   glfwSetErrorCallback(ErrorCallback);
 
@@ -269,11 +271,43 @@ begin
   diffuseMap := createtexture('container2.bmp', GL_RGB);
   specularMap := createtexture('container2_specular.bmp', GL_RGB);
 
-  lightPos := TPoint3d.Create(1.2, 1.0, 2.0);
-
   lastFrame := 0;
 
   glEnable(GL_DEPTH_TEST);
+
+
+  lightingShader.Use();
+  lightingShader.SetUniform1i('material.diffuse',   0);
+  lightingShader.SetUniform1i('material.specular',  1);
+  lightingShader.SetUniform1f('material.shininess', 32.0);
+
+  lightingShader.SetUniform3f('dirLight.direction', -0.2, -1, -0.3);
+  lightingShader.SetUniform3f('dirLight.ambient',  0, 0, 0);
+  lightingShader.SetUniform3f('dirLight.diffuse',  1, 1, 1);
+  lightingShader.SetUniform3f('dirLight.specular', 1, 1, 1);
+
+  lightingShader.SetUniform1f('spotLight.cutOff', Cos(DegToRad(12.5)));
+  lightingShader.SetUniform1f('spotLight.outerCutOff', Cos(DegToRad(17.5)));
+
+  lightingShader.SetUniform3f('spotLight.ambient',  0, 0, 0);
+  lightingShader.SetUniform3f('spotLight.diffuse',  1, 1, 1);
+  lightingShader.SetUniform3f('spotLight.specular', 1, 1, 1);
+
+  lightingShader.SetUniform1f('spotLight.constant',  1.0);
+  lightingShader.SetUniform1f('spotLight.linear',    0.09);
+  lightingShader.SetUniform1f('spotLight.quadratic', 0.032);
+
+  for i:=0 to High(LIGHT_POSITIONS) do
+  begin
+    lightingShader.SetUniformV3f('pointLights['+IntToStr(i)+'].position', LIGHT_POSITIONS[i]);
+    lightingShader.SetUniform3f('pointLights['+IntToStr(i)+'].ambient',  0.05, 0.05, 0.05);
+    lightingShader.SetUniform3f('pointLights['+IntToStr(i)+'].diffuse',  0.8, 0.8, 0.8);
+    lightingShader.SetUniform3f('pointLights['+IntToStr(i)+'].specular', 1.0, 1.0, 1.0);
+    lightingShader.SetUniform1f('pointLights['+IntToStr(i)+'].constant',  1.0);
+    lightingShader.SetUniform1f('pointLights['+IntToStr(i)+'].linear',    0.09);
+    lightingShader.SetUniform1f('pointLights['+IntToStr(i)+'].quadratic', 0.032);
+  end;
+
   while (glfwWindowShouldClose(Window) = 0) do
   begin
     currentFrame := glfwGetTime();
@@ -289,32 +323,10 @@ begin
     glClearColor(0.1, 0.1, 0.1, 1.0);
     glClear(GL_COLOR_BUFFER_BIT or GL_DEPTH_BUFFER_BIT);
 
-//    lightColor.x := sin(glfwGetTime() * 2.0);
-//    lightColor.y := sin(glfwGetTime() * 0.7);
-//    lightColor.z := sin(glfwGetTime() * 1.3);
-//
-    lightAmbCalc := TPoint3D.Create( 0.2, 0.2, 0.2);
-    lightDifCalc := TPoint3D.Create( 0.5, 0.5, 0.5);
-
   //--------------------------------------
-
     lightingShader.Use();
-    lightingShader.SetUniform1i('material.diffuse', 0);
-    lightingShader.SetUniform1i('material.specular', 1);
-    lightingShader.SetUniform1f('material.shininess', 32.0);
-
-    lightingShader.SetUniformV3f('light.ambient',  lightAmbCalc);
-    lightingShader.SetUniformV3f('light.diffuse',  lightDifCalc); // darken diffuse light a bit
-    lightingShader.SetUniform3f('light.specular', 1.0, 1.0, 1.0);
-
-    lightingShader.SetUniformV3f('light.position', ACamera.Position);
-    lightingShader.SetUniformV3f('light.direction', ACamera.Front);
-    lightingShader.SetUniform1f('light.cutOff', Cos(DegToRad(12.5)));
-    lightingShader.SetUniform1f('light.outerCutOff', Cos(DegToRad(17.5)));
-
-    lightingShader.SetUniform1f('light.constant',  1.0);
-    lightingShader.SetUniform1f('light.linear',    0.09);
-    lightingShader.SetUniform1f('light.quadratic', 0.032);
+    lightingShader.SetUniformV3f('spotLight.position', ACamera.Position);
+    lightingShader.SetUniformV3f('spotLight.direction', ACamera.Front);
 
     lightingShader.SetUniformV3f('viewPos', ACamera.Position);
 
@@ -335,32 +347,32 @@ begin
 
     for i:=0 to High(CUBE_POSITIONS) do
     begin
-      APos[0] := CUBE_POSITIONS[i][0];
-      APos[1] := CUBE_POSITIONS[i][1];
-      APos[2] := CUBE_POSITIONS[i][2];
-
       angle := 20 * i;
       model := TMatrix3D.CreateRotation(TPoint3d.Create(1.0, 0.3, 0.5),  DegToRad(angle));
-      model := model * TMatrix3D.CreateTranslation(TPoint3D.Create(APos[0], APos[1], APos[2]));
+      model := model * TMatrix3D.CreateTranslation(CUBE_POSITIONS[i]);
       lightingShader.SetUniformMatrix4fv('model', model);
 
       glDrawArrays(GL_TRIANGLES, 0, 36);
     end;
   //--------------------------------------
 
-//    lightCubeShader.Use();
-//    lightCubeShader.SetUniformV3f('color',  TPoint3D.Create(1, 1, 1));
-//
-//    lightCubeShader.SetUniformMatrix4fv('view', view);
-//    lightCubeShader.SetUniformMatrix4fv('projection', proj);
-//
-//    model := TMatrix3D.Identity;
-//    model := model * TMatrix3D.CreateScaling(TPoint3D.Create(0.2, 0.2, 0.2));
-//    model := model * TMatrix3D.CreateTranslation(lightPos);
-//    lightCubeShader.SetUniformMatrix4fv('model', model);
-//
-//    glBindVertexArray(lightCubeVAO);
-//    glDrawArrays(GL_TRIANGLES, 0, 36);
+    for i:=0 to High(LIGHT_POSITIONS) do
+    begin
+      lightCubeShader.Use();
+      lightCubeShader.SetUniformV3f('color',  TPoint3D.Create(1, 1, 1));
+
+      lightCubeShader.SetUniformMatrix4fv('view', view);
+      lightCubeShader.SetUniformMatrix4fv('projection', proj);
+
+      model := TMatrix3D.Identity;
+      model := model * TMatrix3D.CreateScaling(TPoint3D.Create(0.2, 0.2, 0.2));
+      model := model * TMatrix3D.CreateTranslation(LIGHT_POSITIONS[i]);
+      lightCubeShader.SetUniformMatrix4fv('model', model);
+
+      glBindVertexArray(lightCubeVAO);
+      glDrawArrays(GL_TRIANGLES, 0, 36);
+    end;
+
   //--------------------------------------
 
     glfwSwapBuffers(Window);
