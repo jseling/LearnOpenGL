@@ -13,69 +13,9 @@ uses
   uCamera in 'uCamera.pas',
   uMesh in 'uMesh.pas',
   uModel in 'uModel.pas',
-  uObjModel in 'uObjModel.pas';
-
-//  uImageHandler in 'uImageHandler.pas';
-
-const
-  VERTICES: array [0..287] of single = (
-    // positions       // normals        // texture coords
-    -0.5, -0.5, -0.5,  0.0,  0.0, -1.0,  0.0, 0.0,
-     0.5, -0.5, -0.5,  0.0,  0.0, -1.0,  1.0, 0.0,
-     0.5,  0.5, -0.5,  0.0,  0.0, -1.0,  1.0, 1.0,
-     0.5,  0.5, -0.5,  0.0,  0.0, -1.0,  1.0, 1.0,
-    -0.5,  0.5, -0.5,  0.0,  0.0, -1.0,  0.0, 1.0,
-    -0.5, -0.5, -0.5,  0.0,  0.0, -1.0,  0.0, 0.0,
-
-    -0.5, -0.5,  0.5,  0.0,  0.0, 1.0,   0.0, 0.0,
-     0.5, -0.5,  0.5,  0.0,  0.0, 1.0,   1.0, 0.0,
-     0.5,  0.5,  0.5,  0.0,  0.0, 1.0,   1.0, 1.0,
-     0.5,  0.5,  0.5,  0.0,  0.0, 1.0,   1.0, 1.0,
-    -0.5,  0.5,  0.5,  0.0,  0.0, 1.0,   0.0, 1.0,
-    -0.5, -0.5,  0.5,  0.0,  0.0, 1.0,   0.0, 0.0,
-
-    -0.5,  0.5,  0.5, -1.0,  0.0,  0.0,  1.0, 0.0,
-    -0.5,  0.5, -0.5, -1.0,  0.0,  0.0,  1.0, 1.0,
-    -0.5, -0.5, -0.5, -1.0,  0.0,  0.0,  0.0, 1.0,
-    -0.5, -0.5, -0.5, -1.0,  0.0,  0.0,  0.0, 1.0,
-    -0.5, -0.5,  0.5, -1.0,  0.0,  0.0,  0.0, 0.0,
-    -0.5,  0.5,  0.5, -1.0,  0.0,  0.0,  1.0, 0.0,
-
-     0.5,  0.5,  0.5,  1.0,  0.0,  0.0,  1.0, 0.0,
-     0.5,  0.5, -0.5,  1.0,  0.0,  0.0,  1.0, 1.0,
-     0.5, -0.5, -0.5,  1.0,  0.0,  0.0,  0.0, 1.0,
-     0.5, -0.5, -0.5,  1.0,  0.0,  0.0,  0.0, 1.0,
-     0.5, -0.5,  0.5,  1.0,  0.0,  0.0,  0.0, 0.0,
-     0.5,  0.5,  0.5,  1.0,  0.0,  0.0,  1.0, 0.0,
-
-    -0.5, -0.5, -0.5,  0.0, -1.0,  0.0,  0.0, 1.0,
-     0.5, -0.5, -0.5,  0.0, -1.0,  0.0,  1.0, 1.0,
-     0.5, -0.5,  0.5,  0.0, -1.0,  0.0,  1.0, 0.0,
-     0.5, -0.5,  0.5,  0.0, -1.0,  0.0,  1.0, 0.0,
-    -0.5, -0.5,  0.5,  0.0, -1.0,  0.0,  0.0, 0.0,
-    -0.5, -0.5, -0.5,  0.0, -1.0,  0.0,  0.0, 1.0,
-
-    -0.5,  0.5, -0.5,  0.0,  1.0,  0.0,  0.0, 1.0,
-     0.5,  0.5, -0.5,  0.0,  1.0,  0.0,  1.0, 1.0,
-     0.5,  0.5,  0.5,  0.0,  1.0,  0.0,  1.0, 0.0,
-     0.5,  0.5,  0.5,  0.0,  1.0,  0.0,  1.0, 0.0,
-    -0.5,  0.5,  0.5,  0.0,  1.0,  0.0,  0.0, 0.0,
-    -0.5,  0.5, -0.5,  0.0,  1.0,  0.0,  0.0, 1.0
-  );
-
-const
-  CUBE_POSITIONS: array [0..9] of TPoint3D = (
-    (X: 0.0; Y: 0.0; Z: 0.0),
-    (X: 2.0; Y: 5.0; Z:-15.0),
-    (X:-1.5; Y:-2.2; Z:-2.5),
-    (X:-3.8; Y:-2.0; Z:-12.3),
-    (X: 2.4; Y:-0.4; Z:-3.5),
-    (X:-1.7; Y: 3.0; Z:-7.5),
-    (X: 1.3; Y:-2.0; Z:-2.5),
-    (X: 1.5; Y: 2.0; Z:-2.5),
-    (X: 1.5; Y: 0.2; Z:-1.5),
-    (X:-1.3; Y: 1.0; Z:-1.5)
-  );
+  uObjModel in 'uObjModel.pas',
+  uObjModelLoader in 'uObjModelLoader.pas',
+  uTriangulator in 'uTriangulator.pas';
 
 const
   LIGHT_POSITIONS: array [0..3] of TPoint3D = (
@@ -84,7 +24,6 @@ const
     (X: -4.0; Y:  2.0; Z: -12.0),
     (X:  0.0; Y:  0.0; Z: -3.0)
   );
-
 
 var
   lastX, lastY: Single;
@@ -181,10 +120,8 @@ end;
 procedure Run;
 var
   Window: PGLFWwindow;
-  cubeVAO, VBO, lightCubeVAO: GLuint;
 
-  lightingShader,
-  lightCubeShader: IShader;
+  lightingShader: IShader;
   Width, Height: Integer;
 
   model, view, proj: TMatrix3D;
@@ -196,7 +133,8 @@ var
   diffuseMap, specularMap: GLuint;
 
   i: integer;
-  angle: single;
+
+  AModel: IModel;
 begin
   glfwSetErrorCallback(ErrorCallback);
 
@@ -237,47 +175,34 @@ begin
 
   //--------------------------------------
 
-  glGenVertexArrays(1, @cubeVAO);
-  glGenBuffers(1, @VBO);
-
-  glBindBuffer(GL_ARRAY_BUFFER, VBO);
-  glBufferData(GL_ARRAY_BUFFER, sizeof(VERTICES), @VERTICES, GL_STATIC_DRAW);
-
-  glBindVertexArray(cubeVAO);
-
-  // position attribute
-  glVertexAttribPointer(0, 3, GL_FLOAT, GL_FALSE, 8 * sizeof(single), pointer(0));
-  glEnableVertexAttribArray(0);
-  // normal attribute
-  glVertexAttribPointer(1, 3, GL_FLOAT, GL_FALSE, 8 * sizeof(single), pointer(3* sizeof(Single)));
-  glEnableVertexAttribArray(1);
-  // texture attribute
-  glVertexAttribPointer(2, 2, GL_FLOAT, GL_FALSE, 8 * sizeof(single), pointer(6* sizeof(Single)));
-  glEnableVertexAttribArray(2);
-
-  //--------------------------------------
-
-  // second, configure the light's VAO (VBO stays the same; the vertices are the same for the light object which is also a 3D cube)
-  glGenVertexArrays(1, @lightCubeVAO);
-  glBindVertexArray(lightCubeVAO);
-
-  glBindBuffer(GL_ARRAY_BUFFER, VBO);
-  // note that we update the lamp's position attribute's stride to reflect the updated buffer data
-  glVertexAttribPointer(0, 3, GL_FLOAT, GL_FALSE, 8 * sizeof(single), pointer(0));
-  glEnableVertexAttribArray(0);
-
   //--------------------------------------
 
   lightingShader:= TShader.Create('colors.vs', 'colors.fs');
-  lightCubeShader:= TShader.Create('light_cube.vs', 'light_cube.fs');
 
-  diffuseMap := createtexture('container2.bmp', GL_RGB);
-  specularMap := createtexture('container2_specular.bmp', GL_RGB);
+//  diffuseMap := createtexture('..\..\..\..\media\backpack\diffuse.bmp', GL_RGB);
+//  specularMap := createtexture('..\..\..\..\media\backpack\specular.bmp', GL_RGB);
+//  AModel := TModel.Create(TObjModelLoader.Create('..\..\..\..\media\backpack\backpack.obj'));
+
+//  diffuseMap := createtexture('..\..\..\..\media\QuaterniusMonsters\Cthulhu_Texture.bmp', GL_RGB);
+//  AModel := TModel.Create(TObjModelLoader.Create('..\..\..\..\media\QuaterniusMonsters\Cthulhu.obj'));
+
+  diffuseMap := createtexture('..\..\..\..\media\QuaterniusRPG\Wizard_Texture.bmp', GL_RGB);
+  AModel := TModel.Create(TObjModelLoader.Create('..\..\..\..\media\QuaterniusRPG\Wizard.obj'));
+
+//  diffuseMap := createtexture('..\..\..\..\media\newscene\Container.bmp', GL_RGB);
+//  AModel := TModel.Create(TObjModelLoader.Create('..\..\..\..\media\newscene\2quadas.obj'));
+
+//  diffuseMap := createtexture('..\..\..\..\media\oranberry\OranBerry.bmp', GL_RGB);
+//  AModel := TModel.Create(TObjModelLoader.Create('..\..\..\..\media\oranberry\OranBerry.obj'));
+
+
+//  diffuseMap := createtexture('..\..\..\..\media\capsule\capsule0.bmp', GL_RGB);
+//  AModel := TModel.Create(TObjModelLoader.Create('..\..\..\..\media\capsule\capsule.obj'));
+
 
   lastFrame := 0;
 
   glEnable(GL_DEPTH_TEST);
-
 
   lightingShader.Use();
   lightingShader.SetUniform1i('material.diffuse',   0);
@@ -326,7 +251,6 @@ begin
     glClearColor(0.1, 0.1, 0.1, 1.0);
     glClear(GL_COLOR_BUFFER_BIT or GL_DEPTH_BUFFER_BIT);
 
-  //--------------------------------------
     lightingShader.Use();
     lightingShader.SetUniformV3f('spotLight.position', ACamera.Position);
     lightingShader.SetUniformV3f('spotLight.direction', ACamera.Front);
@@ -339,42 +263,14 @@ begin
     lightingShader.SetUniformMatrix4fv('view', view);
     lightingShader.SetUniformMatrix4fv('projection', proj);
 
-    // bind diffuse map
-    glActiveTexture(GL_TEXTURE0);
-    glBindTexture(GL_TEXTURE_2D, diffuseMap);
+    model := TMatrix3D.Identity;
+//    model := model * TMatrix3D.CreateScaling(TPoint3D.Create(0.01, 0.01, 0.01));
+    lightingShader.SetUniformMatrix4fv('model', model);
 
-    glActiveTexture(GL_TEXTURE1);
-    glBindTexture(GL_TEXTURE_2D, specularMap);
+    AModel.Draw(lightingShader);
 
-    glBindVertexArray(cubeVAO);
-
-    for i:=0 to High(CUBE_POSITIONS) do
-    begin
-      angle := 20 * i;
-      model := TMatrix3D.CreateRotation(TPoint3d.Create(1.0, 0.3, 0.5),  DegToRad(angle));
-      model := model * TMatrix3D.CreateTranslation(CUBE_POSITIONS[i]);
-      lightingShader.SetUniformMatrix4fv('model', model);
-
-      glDrawArrays(GL_TRIANGLES, 0, 36);
-    end;
   //--------------------------------------
 
-    for i:=0 to High(LIGHT_POSITIONS) do
-    begin
-      lightCubeShader.Use();
-      lightCubeShader.SetUniformV3f('color',  TPoint3D.Create(1, 1, 1));
-
-      lightCubeShader.SetUniformMatrix4fv('view', view);
-      lightCubeShader.SetUniformMatrix4fv('projection', proj);
-
-      model := TMatrix3D.Identity;
-      model := model * TMatrix3D.CreateScaling(TPoint3D.Create(0.2, 0.2, 0.2));
-      model := model * TMatrix3D.CreateTranslation(LIGHT_POSITIONS[i]);
-      lightCubeShader.SetUniformMatrix4fv('model', model);
-
-      glBindVertexArray(lightCubeVAO);
-      glDrawArrays(GL_TRIANGLES, 0, 36);
-    end;
 
   //--------------------------------------
 

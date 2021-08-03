@@ -9,7 +9,7 @@ uses
   System.Math.Vectors,
   System.Types,
   uShader,
-  System.SysUtils;
+  System.SysUtils, Winapi.Windows;
 
 type
   TVertex = record
@@ -52,14 +52,18 @@ constructor TMesh.Create(_AVertices: array of TVertex;
 var
    i: integer;
 begin
+  OutputDebugString(PWideChar('Loading TMesh vertices. Total: ' + IntToStr(Length(_AVertices))));
   SetLength(FVertices, Length(_AVertices));
   for i := 0 to Length(_AVertices) -1 do
     FVertices[i] := _AVertices[i];
 
+  OutputDebugString(PWideChar('Loading TMesh indices. Total: ' + IntToStr(Length(_AIndices))));
   SetLength(FIndices, Length(_AIndices));
   for i := 0 to Length(_AIndices) -1 do
     FIndices[i] := _AIndices[i];
 
+
+  OutputDebugString(PWideChar('Loading TMesh textures. Total: ' + IntToStr(Length(_ATextures))));
   SetLength(FTextures, Length(_ATextures));
   for i := 0 to Length(_ATextures) -1 do
     FTextures[i] := _ATextures[i];
@@ -100,6 +104,9 @@ begin
 
   // draw mesh
   glBindVertexArray(FVAO);
+
+//  glPolygonMode(GL_FRONT_AND_BACK, GL_LINE);
+
   glDrawElements(GL_TRIANGLES, Length(FIndices), GL_UNSIGNED_INT, nil);
   glBindVertexArray(0);
 end;

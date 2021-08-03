@@ -10,14 +10,23 @@ uses
   System.Types,
   uShader,
   uMesh,
-  System.SysUtils;
+  System.SysUtils, Winapi.Windows;
 
 type
   IModelLoader = interface
-  ['{7A50E87B-4AC0-4C2B-B399-4C8332878460}']
+  ['{ACC66B9B-4CB7-41C6-A9AB-F66BE3FA259A}']
+    function Vertices(idx: Integer): TVertex;
+    function VerticesCount: Integer;
+    function Indices(idx: Integer): Integer;
+    function IndicesCount: Integer;
   end;
 
-  TModel = class
+  IModel = interface
+  ['{934551D5-C606-467D-9AB5-2673BBB84574}']
+    procedure Draw(_AShader: IShader);
+  end;
+
+  TModel = class(TInterfacedObject, IModel)
   private
     FMeshes: array of TMesh;
   public
@@ -31,9 +40,37 @@ implementation
 { TModel }
 
 constructor TModel.Create(_AModelLoader: IModelLoader);
+var
+  AVertices: array of TVertex;
+  AIndices: array of GLuint;
+  i: integer;
+  AMesh: TMesh;
+  ATexture: TTexture;
 begin
-//    _AModelLoader.
+  OutputDebugString(PWideChar('Loading TModel...'));
 
+  SetLength(AVertices, _AModelLoader.VerticesCount);
+  SetLength(AIndices, _AModelLoader.IndicesCount);
+
+  for i := 0 to _AModelLoader.VerticesCount -1 do
+  begin
+    AVertices[i] := _AModelLoader.Vertices(i);
+  end;
+
+  for i := 0 to _AModelLoader.IndicesCount -1 do
+  begin
+    AIndices[i] := _AModelLoader.Indices(i);
+  end;
+
+  ATexture.ID := 1;
+  ATexture.TexType := 'diffuse';
+
+  OutputDebugString(PWideChar('Loading TModel complete.'));
+
+  AMesh := TMesh.Create(AVertices, AIndices, [ATexture]);
+
+  SetLength(FMeshes, 1);
+  FMeshes[0] := AMesh;
 end;
 
 destructor TModel.Destroy;
