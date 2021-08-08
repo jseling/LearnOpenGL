@@ -15,7 +15,9 @@ uses
   uModel in 'uModel.pas',
   uObjModel in 'uObjModel.pas',
   uObjModelLoader in 'uObjModelLoader.pas',
-  uTriangulator in 'uTriangulator.pas';
+  uTriangulator in 'uTriangulator.pas',
+  Neslib.Stb.Common in '..\SharedLibs\Neslib.Stb.Image\Neslib.Stb.Common.pas',
+  Neslib.Stb.Image in '..\SharedLibs\Neslib.Stb.Image\Neslib.Stb.Image.pas';
 
 const
   LIGHT_POSITIONS: array [0..3] of TPoint3D = (
@@ -24,6 +26,19 @@ const
     (X: -4.0; Y:  2.0; Z: -12.0),
     (X:  0.0; Y:  0.0; Z: -3.0)
   );
+
+const
+  PIXELS : array [0..11] of single = (
+    0, 0, 0,   1, 1, 1,
+    1, 1, 1,   0, 0, 0);
+
+  PIXELS_B : array [0..11] of byte = (
+    0, 0, 0,   255, 255, 255,
+    255, 255, 255,   0, 0, 0);
+
+  PIXELS_LW : array [0..3] of GLuint = (
+    $FF0000FF, $00FF00FF,
+    $0000FFFF, $FFFFFFFF);
 
 var
   lastX, lastY: Single;
@@ -95,21 +110,114 @@ begin
 end;
 
 
-function createtexture(path: String; format: GLenum): GLuint;
+function createtexture(path: String): GLuint;
 var
   textureID: GLuint;
   info: TImageInfo;
+
+
+  Image: Pointer;
+  Width, Height, Components: Integer;
+
+//  FileData: TBytes;
+//  FZipFile: TZipFile;
+
+  filename: PAnsiChar;
+
+  ImageBytes: TBytes;
+
+  format: GLenum;
 begin
   glGenTextures(1, @textureID);
-  info := LoadTexture(path);
+  {
+ https://stackoverflow.com/questions/12969971/is-it-possible-to-manually-create-image-data-for-opengl-texture-use
+
+ https://open.gl/textures
+
+ http://docs.gl/gl3/glTexImage2D
+
+ https://riptutorial.com/opengl/example/11967/basics-of-texturing
+
+ https://www.haroldserrano.com/blog/a-brief-talk-about-opengl-textures
+  }
+
+
+//  info := LoadTexture(path);
+
   try
-    glBindTexture(GL_TEXTURE_2D, textureID);  
-    glTexImage2d(GL_TEXTURE_2D, 0, format, info.width, info.height, 0, format, GL_UNSIGNED_BYTE, info.pdata);
+    glBindTexture(GL_TEXTURE_2D, textureID);
+
+//    glTexImage2d(GL_TEXTURE_2D, 0, GL_RGB, 2, 2, 0, GL_RGB, GL_FLOAT, Pointer(PIXELS[0]));
+//    glTexImage2d(GL_TEXTURE_2D, 0, GL_RGBA, 2, 2, 0, GL_RGBA, GL_UNSIGNED_BYTE, Pointer(PIXELS_LW[0]));
+//     glTexImage2d(GL_TEXTURE_2D, 0, GL_RGB, 2, 2, 0, GL_RGB, GL_UNSIGNED_BYTE, Pointer(PIXELS_B[0]));
+
+//    glTexImage2d(GL_TEXTURE_2D, 0, format, info.width, info.height, 0, format, GL_UNSIGNED_BYTE, info.pdata);
+
+//    FZipFile := TZipFile.Create;
+//    FZipFile.Open('container2.zip', TZipMode.zmRead);
+//    FZipFile.Read('container2.png', FileData);
+//    FZipFile.Free;
+
+//    Image := stbi_load_from_memory(FileData, Length(FileData), Width, Height, Components, 3);
+
+    filename :=  PAnsiChar(AnsiString(path));
+    stbi_set_flip_vertically_on_load(True);
+
+    //https://github.com/nothings/stb/blob/3a1174060a7dd4eb652d4e6854bc4cd98c159200/stb_image.h#L145
+    Image := stbi_load(filename, Width, Height, Components, 0);
+
+    if Components = 3 then
+      format := GL_RGB
+    else if Components = 4 then
+      format := GL_RGBA
+    else
+      raise Exception.Create('Texture channels configuration not supported.');
+
+
+
+//    SetLength(ImageBytes, 48);
+//    ImageBytes := [ 255,000,000, 255,000,000, 000,255,000, 000,255,000,
+//                    255,000,000, 255,000,000, 000,255,000, 000,255,000,
+//                    000,000,255, 000,000,255, 255,255,255, 255,255,255,
+//                    000,000,255, 000,000,255, 255,255,255, 255,255,255 ];
+//    Width:=4;
+//    Height:= 4;
+
+//    SetLength(ImageBytes, 12);
+//    ImageBytes := [ 255,000,000, 000,255,000,
+//                    000,000,255, 255,255,255 ];
+//    Width:=2;
+//    Height:= 2;
+//
+//    SetLength(ImageBytes, 12);
+//    ImageBytes := [ 255,000,000,255, 000,255,000,255,
+//                    000,000,255,255, 255,255,255,255 ];
+//    Width:=2;
+//    Height:= 2;
+//
+//    Image := Pointer(ImageBytes);
+//    Assert(Assigned(Image));
+
+//https://www.khronos.org/opengl/wiki/Pixel_Transfer#Pixel_layout
+
+    if (Width < 4) or (Height < 4) then
+      glPixelStorei(GL_UNPACK_ALIGNMENT, 1); //https://community.khronos.org/t/using-2x2-rgb-texture-creates-red-lines/35262/3
+
+    glTexImage2d(GL_TEXTURE_2D, 0, format, Width, Height, 0, format, GL_UNSIGNED_BYTE, Image);
+
+    stbi_image_free(Image);
+
     glGenerateMipmap(GL_TEXTURE_2D);
+
+
+
     glTexParameteri(GL_TEXTURE_2D, GL_TEXTURE_WRAP_S, GL_REPEAT);
     glTexParameteri(GL_TEXTURE_2D, GL_TEXTURE_WRAP_T, GL_REPEAT);
-    glTexParameteri(GL_TEXTURE_2D, GL_TEXTURE_MIN_FILTER, GL_LINEAR);
-    glTexParameteri(GL_TEXTURE_2D, GL_TEXTURE_MAG_FILTER, GL_LINEAR); 
+//    glTexParameteri(GL_TEXTURE_2D, GL_TEXTURE_MIN_FILTER, GL_LINEAR);
+//    glTexParameteri(GL_TEXTURE_2D, GL_TEXTURE_MAG_FILTER, GL_LINEAR);
+
+    glTexParameteri(GL_TEXTURE_2D, GL_TEXTURE_MIN_FILTER, GL_NEAREST);
+    glTexParameteri(GL_TEXTURE_2D, GL_TEXTURE_MAG_FILTER, GL_NEAREST);
 
     result := textureID;    
   finally 
@@ -179,24 +287,26 @@ begin
 
   lightingShader:= TShader.Create('colors.vs', 'colors.fs');
 
-//  diffuseMap := createtexture('..\..\..\..\media\backpack\diffuse.bmp', GL_RGB);
-//  specularMap := createtexture('..\..\..\..\media\backpack\specular.bmp', GL_RGB);
+//  diffuseMap := createtexture('..\..\..\..\media\backpack\diffuse.bmp');
+//  specularMap := createtexture('..\..\..\..\media\backpack\specular.bmp');
 //  AModel := TModel.Create(TObjModelLoader.Create('..\..\..\..\media\backpack\backpack.obj'));
 
-//  diffuseMap := createtexture('..\..\..\..\media\QuaterniusMonsters\Cthulhu_Texture.bmp', GL_RGB);
-//  AModel := TModel.Create(TObjModelLoader.Create('..\..\..\..\media\QuaterniusMonsters\Cthulhu.obj'));
+  diffuseMap := createtexture('..\..\..\..\media\QuaterniusMonsters\Cthulhu_Texture.png');
+//    diffuseMap := createtexture('..\..\..\..\media\QuaterniusMonsters\2x2.bmp');
+  AModel := TModel.Create(TObjModelLoader.Create('..\..\..\..\media\QuaterniusMonsters\Cthulhu.obj'));
 
-  diffuseMap := createtexture('..\..\..\..\media\QuaterniusRPG\Wizard_Texture.bmp', GL_RGB);
-  AModel := TModel.Create(TObjModelLoader.Create('..\..\..\..\media\QuaterniusRPG\Wizard.obj'));
+//  diffuseMap := createtexture('..\..\..\..\media\QuaterniusRPG\Wizard_Texture.bmp');
+//  AModel := TModel.Create(TObjModelLoader.Create('..\..\..\..\media\QuaterniusRPG\Wizard.obj'));
 
-//  diffuseMap := createtexture('..\..\..\..\media\newscene\Container.bmp', GL_RGB);
-//  AModel := TModel.Create(TObjModelLoader.Create('..\..\..\..\media\newscene\2quadas.obj'));
+//  diffuseMap := createtexture('..\..\..\..\media\Cube\2x2.bmp');
+//  diffuseMap := createtexture('..\..\..\..\media\awesomeface.png');
+//  AModel := TModel.Create(TObjModelLoader.Create('..\..\..\..\media\Cube\Cube.obj'));
 
-//  diffuseMap := createtexture('..\..\..\..\media\oranberry\OranBerry.bmp', GL_RGB);
+//  diffuseMap := createtexture('..\..\..\..\media\oranberry\OranBerry.bmp');
 //  AModel := TModel.Create(TObjModelLoader.Create('..\..\..\..\media\oranberry\OranBerry.obj'));
 
 
-//  diffuseMap := createtexture('..\..\..\..\media\capsule\capsule0.bmp', GL_RGB);
+//  diffuseMap := createtexture('..\..\..\..\media\capsule\capsule0.bmp');
 //  AModel := TModel.Create(TObjModelLoader.Create('..\..\..\..\media\capsule\capsule.obj'));
 
 

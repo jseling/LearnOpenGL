@@ -333,6 +333,8 @@
         <DCCReference Include="uObjModel.pas"/>
         <DCCReference Include="uObjModelLoader.pas"/>
         <DCCReference Include="uTriangulator.pas"/>
+        <DCCReference Include="..\SharedLibs\Neslib.Stb.Image\Neslib.Stb.Common.pas"/>
+        <DCCReference Include="..\SharedLibs\Neslib.Stb.Image\Neslib.Stb.Image.pas"/>
         <BuildConfiguration Include="Release">
             <Key>Cfg_2</Key>
             <CfgParent>Base</CfgParent>

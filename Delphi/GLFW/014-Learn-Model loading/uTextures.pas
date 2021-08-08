@@ -133,12 +133,12 @@ var
 begin
   JPG:=TJPEGImage.Create;
 
-    try
-      JPG.LoadFromFile(Filename);
-    except
-      MessageBox(0, PChar('Couldn''t load JPG - "'+ Filename +'"'), PChar('BMP Unit'), MB_OK);
-      Exit;
-    end;
+  try
+    JPG.LoadFromFile(Filename);
+  except
+    MessageBox(0, PChar('Couldn''t load JPG - "'+ Filename +'"'), PChar('BMP Unit'), MB_OK);
+    Exit;
+  end;
 
 
   // Create Bitmap
@@ -160,6 +160,7 @@ begin
     Begin
       c:=Line^ and $FFFFFF; // Need to do a color swap
       Data[W+(H*Width)] :=(((c and $FF) shl 16)+(c shr 16)+(c and $FF00)) or $FF000000;  // 4 channel.
+//        Data[W+(H*Width)] := $FF000000;
       inc(Line);
     End;
   End;
