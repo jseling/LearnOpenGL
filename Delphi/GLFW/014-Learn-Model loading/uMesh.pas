@@ -23,21 +23,24 @@ type
     TexType: string;
   end;
 
+  TVertexArray = array of TVertex;
+  TIndiceArray = array of GLuint;
+  TTextureArray = array of TTexture;
+
   TMesh = class
   private
-    FVertices: array of TVertex;
-    FIndices: array of GLuint;
-    FTextures: array of TTexture;
+    FVertices: TVertexArray;
+    FIndices: TIndiceArray;
+    FTextures: TTextureArray;
     FVAO: GLuint;
     FVBO: GLuint;
     FEBO: GLuint;
-
-    procedure setupMesh();
   public
-    constructor Create(_AVertices: array of TVertex;
-                       _AIndices: array of GLuint;
-                       _ATextures: array of TTexture);
-
+    constructor Create(_AVSize, _AISize, _ATSize: Integer);
+    property Vertices: TVertexArray read FVertices write FVertices;
+    property Indices: TIndiceArray read FIndices write FIndices;
+    property Textures: TTextureArray read FTextures write FTextures;
+    procedure setupMesh();
     procedure Draw(_AShader: IShader);
 
   end;
@@ -46,29 +49,12 @@ implementation
 
 { TMesh }
 
-constructor TMesh.Create(_AVertices: array of TVertex;
-                         _AIndices: array of GLuint;
-                         _ATextures: array of TTexture);
-var
-   i: integer;
+
+constructor TMesh.Create(_AVSize, _AISize, _ATSize: Integer);
 begin
-  OutputDebugString(PWideChar('Loading TMesh vertices. Total: ' + IntToStr(Length(_AVertices))));
-  SetLength(FVertices, Length(_AVertices));
-  for i := 0 to Length(_AVertices) -1 do
-    FVertices[i] := _AVertices[i];
-
-  OutputDebugString(PWideChar('Loading TMesh indices. Total: ' + IntToStr(Length(_AIndices))));
-  SetLength(FIndices, Length(_AIndices));
-  for i := 0 to Length(_AIndices) -1 do
-    FIndices[i] := _AIndices[i];
-
-
-  OutputDebugString(PWideChar('Loading TMesh textures. Total: ' + IntToStr(Length(_ATextures))));
-  SetLength(FTextures, Length(_ATextures));
-  for i := 0 to Length(_ATextures) -1 do
-    FTextures[i] := _ATextures[i];
-
-  setupMesh();
+  SetLength(FVertices, _AVSize);
+  SetLength(FIndices, _AISize);
+  SetLength(FTextures, _ATSize);
 end;
 
 procedure TMesh.Draw(_AShader: IShader);

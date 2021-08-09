@@ -114,16 +114,16 @@ var
   i, j: integer;
   AVertex: TVertex;
   AFaceVertex: TFaceVertex;
-  AFace: TArray<TFaceVertex>;
+  AFace: TFace;
   AVertexIndice: Integer;
 begin
   OutputDebugString(PWideChar('Loading TObjModelLoader. Total faces: ' + IntToStr(FModel.FaceCount)));
   for i:=0 to FModel.FaceCount -1 do
   begin
     AFace := FModel.Face(i);
-    for j := 0 to Length(AFace) -1 do
+    for j := 0 to Length(AFace.Vertices) -1 do
     begin
-      AFaceVertex := AFace[j];
+      AFaceVertex := AFace.Vertices[j];
 
       AVertex.Position := FModel.Vert(AFaceVertex.IDPosition);
       AVertex.Normal := FModel.VertNormal(AFaceVertex.IDNormal);

@@ -10,7 +10,8 @@ uses
   System.Types,
   uShader,
   uMesh,
-  System.SysUtils, Winapi.Windows;
+  System.SysUtils, Winapi.Windows,
+  System.Generics.Collections;
 
 type
   IModelLoader = interface
@@ -28,7 +29,7 @@ type
 
   TModel = class(TInterfacedObject, IModel)
   private
-    FMeshes: array of TMesh;
+    FMeshes: TObjectList<TMesh>;
   public
     constructor Create(_AModelLoader: IModelLoader);
     destructor Destroy; override;
@@ -41,54 +42,51 @@ implementation
 
 constructor TModel.Create(_AModelLoader: IModelLoader);
 var
-  AVertices: array of TVertex;
-  AIndices: array of GLuint;
   i: integer;
   AMesh: TMesh;
   ATexture: TTexture;
 begin
+  FMeshes := TObjectList<TMesh>.Create;
   OutputDebugString(PWideChar('Loading TModel...'));
 
-  SetLength(AVertices, _AModelLoader.VerticesCount);
-  SetLength(AIndices, _AModelLoader.IndicesCount);
+  AMesh := TMesh.Create(_AModelLoader.VerticesCount, _AModelLoader.IndicesCount, 1);
+
 
   for i := 0 to _AModelLoader.VerticesCount -1 do
   begin
-    AVertices[i] := _AModelLoader.Vertices(i);
+    AMesh.Vertices[i] := _AModelLoader.Vertices(i);
   end;
 
   for i := 0 to _AModelLoader.IndicesCount -1 do
   begin
-    AIndices[i] := _AModelLoader.Indices(i);
+    AMesh.Indices[i] := _AModelLoader.Indices(i);
   end;
 
-  ATexture.ID := 1;
-  ATexture.TexType := 'diffuse';
+  AMesh.Textures[0].ID := 1;
+  AMesh.Textures[0].TexType := 'diffuse';
+
+  AMesh.SetuPMesh();
 
   OutputDebugString(PWideChar('Loading TModel complete.'));
 
-  AMesh := TMesh.Create(AVertices, AIndices, [ATexture]);
 
-  SetLength(FMeshes, 1);
-  FMeshes[0] := AMesh;
+
+  FMeshes.Add(AMesh);
 end;
 
 destructor TModel.Destroy;
-var
-  i: integer;
 begin
-  for i := 0 to Length(FMeshes) -1 do
-    FMeshes[i].Free;
+  FMeshes.Free;
 
   inherited;
 end;
 
 procedure TModel.Draw(_AShader: IShader);
 var
-  i: integer;
+  AMesh: TMesh;
 begin
-  for i := 0 to Length(FMeshes) -1 do
-    FMeshes[i].Draw(_AShader);
+  for AMesh in FMeshes do
+    AMesh.Draw(_AShader);
 end;
 
 end.

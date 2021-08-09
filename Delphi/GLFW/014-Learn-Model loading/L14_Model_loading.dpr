@@ -164,14 +164,14 @@ begin
     stbi_set_flip_vertically_on_load(True);
 
     //https://github.com/nothings/stb/blob/3a1174060a7dd4eb652d4e6854bc4cd98c159200/stb_image.h#L145
-    Image := stbi_load(filename, Width, Height, Components, 0);
+    Image := stbi_load(filename, Width, Height, Components, 3);
 
-    if Components = 3 then
-      format := GL_RGB
-    else if Components = 4 then
-      format := GL_RGBA
-    else
-      raise Exception.Create('Texture channels configuration not supported.');
+//    if Components = 3 then
+      format := GL_RGB;
+//    else if Components = 4 then
+//      format := GL_RGBA
+//    else
+//      raise Exception.Create('Texture channels configuration not supported.');
 
 
 
@@ -213,11 +213,11 @@ begin
 
     glTexParameteri(GL_TEXTURE_2D, GL_TEXTURE_WRAP_S, GL_REPEAT);
     glTexParameteri(GL_TEXTURE_2D, GL_TEXTURE_WRAP_T, GL_REPEAT);
-//    glTexParameteri(GL_TEXTURE_2D, GL_TEXTURE_MIN_FILTER, GL_LINEAR);
-//    glTexParameteri(GL_TEXTURE_2D, GL_TEXTURE_MAG_FILTER, GL_LINEAR);
+    glTexParameteri(GL_TEXTURE_2D, GL_TEXTURE_MIN_FILTER, GL_LINEAR);
+    glTexParameteri(GL_TEXTURE_2D, GL_TEXTURE_MAG_FILTER, GL_LINEAR);
 
-    glTexParameteri(GL_TEXTURE_2D, GL_TEXTURE_MIN_FILTER, GL_NEAREST);
-    glTexParameteri(GL_TEXTURE_2D, GL_TEXTURE_MAG_FILTER, GL_NEAREST);
+//    glTexParameteri(GL_TEXTURE_2D, GL_TEXTURE_MIN_FILTER, GL_NEAREST);
+//    glTexParameteri(GL_TEXTURE_2D, GL_TEXTURE_MAG_FILTER, GL_NEAREST);
 
     result := textureID;    
   finally 
@@ -287,15 +287,15 @@ begin
 
   lightingShader:= TShader.Create('colors.vs', 'colors.fs');
 
-//  diffuseMap := createtexture('..\..\..\..\media\backpack\diffuse.bmp');
-//  specularMap := createtexture('..\..\..\..\media\backpack\specular.bmp');
+//  diffuseMap := createtexture('..\..\..\..\media\backpack\diffuse.jpg');
+//  specularMap := createtexture('..\..\..\..\media\backpack\specular.png');
 //  AModel := TModel.Create(TObjModelLoader.Create('..\..\..\..\media\backpack\backpack.obj'));
 
   diffuseMap := createtexture('..\..\..\..\media\QuaterniusMonsters\Cthulhu_Texture.png');
 //    diffuseMap := createtexture('..\..\..\..\media\QuaterniusMonsters\2x2.bmp');
   AModel := TModel.Create(TObjModelLoader.Create('..\..\..\..\media\QuaterniusMonsters\Cthulhu.obj'));
 
-//  diffuseMap := createtexture('..\..\..\..\media\QuaterniusRPG\Wizard_Texture.bmp');
+//  diffuseMap := createtexture('..\..\..\..\media\QuaterniusRPG\Wizard_Texture.png');
 //  AModel := TModel.Create(TObjModelLoader.Create('..\..\..\..\media\QuaterniusRPG\Wizard.obj'));
 
 //  diffuseMap := createtexture('..\..\..\..\media\Cube\2x2.bmp');
@@ -324,16 +324,16 @@ begin
   lightingShader.SetUniform3f('dirLight.diffuse',  1, 1, 1);
   lightingShader.SetUniform3f('dirLight.specular', 1, 1, 1);
 
-  lightingShader.SetUniform1f('spotLight.cutOff', Cos(DegToRad(12.5)));
-  lightingShader.SetUniform1f('spotLight.outerCutOff', Cos(DegToRad(17.5)));
-
-  lightingShader.SetUniform3f('spotLight.ambient',  0, 0, 0);
-  lightingShader.SetUniform3f('spotLight.diffuse',  1, 1, 1);
-  lightingShader.SetUniform3f('spotLight.specular', 1, 1, 1);
-
-  lightingShader.SetUniform1f('spotLight.constant',  1.0);
-  lightingShader.SetUniform1f('spotLight.linear',    0.09);
-  lightingShader.SetUniform1f('spotLight.quadratic', 0.032);
+//  lightingShader.SetUniform1f('spotLight.cutOff', Cos(DegToRad(12.5)));
+//  lightingShader.SetUniform1f('spotLight.outerCutOff', Cos(DegToRad(17.5)));
+//
+//  lightingShader.SetUniform3f('spotLight.ambient',  0, 0, 0);
+//  lightingShader.SetUniform3f('spotLight.diffuse',  1, 1, 1);
+//  lightingShader.SetUniform3f('spotLight.specular', 1, 1, 1);
+//
+//  lightingShader.SetUniform1f('spotLight.constant',  1.0);
+//  lightingShader.SetUniform1f('spotLight.linear',    0.09);
+//  lightingShader.SetUniform1f('spotLight.quadratic', 0.032);
 
   for i:=0 to High(LIGHT_POSITIONS) do
   begin
@@ -358,12 +358,13 @@ begin
 
     glViewport(0, 0, Width, Height);
 
-    glClearColor(0.1, 0.1, 0.1, 1.0);
+    glClearColor(0.9, 0.9, 0.9, 1.0);
+//    glClearColor(0.1, 0.1, 0.1, 1.0);
     glClear(GL_COLOR_BUFFER_BIT or GL_DEPTH_BUFFER_BIT);
 
     lightingShader.Use();
-    lightingShader.SetUniformV3f('spotLight.position', ACamera.Position);
-    lightingShader.SetUniformV3f('spotLight.direction', ACamera.Front);
+//    lightingShader.SetUniformV3f('spotLight.position', ACamera.Position);
+//    lightingShader.SetUniformV3f('spotLight.direction', ACamera.Front);
 
     lightingShader.SetUniformV3f('viewPos', ACamera.Position);
 

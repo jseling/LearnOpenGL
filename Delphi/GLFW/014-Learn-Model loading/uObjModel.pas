@@ -30,7 +30,22 @@ type
     IDPosition: Integer;
     IDUV: Integer;
     IDNormal: Integer;
-    constructor Create(_AIdPosition, _AIdUV, _AIdNormal: Integer);
+
+//    IDPositionObject: Integer;
+//    IDUVObject: Integer;
+//    IDNormalObject: Integer;
+  end;
+
+//  TObject = class
+//  private
+//  public
+//
+//  end;
+
+  TFace = record
+    Vertices: TArray<TFaceVertex>;
+    IDMaterial: Integer;
+    IDObject: Integer;
   end;
 
   TObjModel = class
@@ -38,18 +53,25 @@ type
     FVerts: TList<TPoint3D>;
     FVertsTexture: TList<TPointF>;
     FVertsNormal: TList<TPoint3D>;
-    FFaces: TList<TArray<TFaceVertex>>;
+    FFaces: TList<TFace>;
+
+    FObjects: TList<String>;
+    FMaterials: TDictionary<String, Integer>;
+
+    FCurrentMaterial: Integer;
+    FIsNewObject: Boolean;
 
     procedure AddVert(_AVert: TPoint3D);
     procedure AddVertTexture(_AVert: TPointF);
     procedure AddVertNormal(_AVert: TPoint3D);
-    procedure AddFace(_AFace: TArray<TFaceVertex>);
+    procedure AddFace(_AFace: TFace);
 
     procedure ParseVert(const _ALine: String);
     procedure ParseVertTexture(const _ALine: String);
     procedure ParseVertNormal(const _ALine: String);
     procedure ParseFace(const _ALine: String);
-
+    procedure ParseObject(const _ALine: String);
+    procedure ParseMaterial(const _ALine: String);
   public
     constructor Create(const _AFileName: String);
     destructor Destroy; override;
@@ -63,7 +85,7 @@ type
     function VertNormal(i: Integer): TPoint3D;
     function VertNormalCount: integer;
 
-    function Face(idx: Integer): TArray<TFaceVertex>;  //face=triangle
+    function Face(idx: Integer): TFace;  //face=triangle
     function FaceCount: integer;
   end;
 
@@ -71,7 +93,7 @@ implementation
 
 { TObjModel }
 
-procedure TObjModel.AddFace(_AFace: TArray<TFaceVertex>);
+procedure TObjModel.AddFace(_AFace: TFace);
 begin
   FFaces.Add(_AFace);
 end;
@@ -93,23 +115,45 @@ end;
 
 constructor TObjModel.Create(const _AFileName: String);
 var
-  AFile: TStringList;
+//  AFile: TStringList;
   ALine: String;
+
+  FileObj: TextFile;
 begin
+  FCurrentMaterial := -1;
+  FIsNewObject := True;
+
   FVerts := TList<TPoint3D>.Create;
   FVertsTexture := TList<TPointF>.Create;
   FVertsNormal := TList<TPoint3D>.Create;
-  FFaces := TList<TArray<TFaceVertex>>.Create;
+  FFaces := TList<TFace>.Create;
+  FObjects := TList<String>.Create;
+  FMaterials:= TDictionary<String, Integer>.Create;
 
 
-  AFile := TStringList.Create;
+
+//  AFile := TStringList.Create;
+  AssignFile(FileObj, _AFileName);
   try
-    AFile.LoadFromFile(_AFileName);
+    Reset(FileObj);
+//    AFile.LoadFromFile(_AFileName);
 
     OutputDebugString(PWideChar('Parsing TObjModel.'));
-    for ALine in AFile do
+
+//    for ALine in AFile do
+    while not EOF(FileObj) do
     begin
-      if Pos('v ', ALine) = 1 then
+      ReadLn(FileObj, ALine);
+
+      if Pos('o ', ALine) = 1 then
+      begin
+        ParseObject(ALine);
+      end
+      else if Pos('usemtl ', ALine) = 1 then
+      begin
+        ParseMaterial(ALine);
+      end
+      else if Pos('v ', ALine) = 1 then
       begin
         ParseVert(ALine);
       end
@@ -128,7 +172,8 @@ begin
     end;
     OutputDebugString(PWideChar('Parsing TObjModel complete.'));
   finally
-    AFile.Free;
+//    AFile.Free;
+    CloseFile(FileObj);
   end;
 end;
 
@@ -138,10 +183,12 @@ begin
   FVertsTexture.Free;
   FVertsNormal.Free;
   FFaces.Free;
+  FObjects.Free;
+  FMaterials.Free;
   inherited;
 end;
 
-function TObjModel.Face(idx: Integer): TArray<TFaceVertex>;
+function TObjModel.Face(idx: Integer): TFace;
 begin
   result := FFaces[idx];
 end;
@@ -155,6 +202,8 @@ procedure TObjModel.ParseFace(const _ALine: String);
 var
   ATriangle: TArray<TFaceVertex>;
   i: integer;
+
+  AFace: TFace;
 
   faceVertices: TStringDynArray;
   faceVertice: TStringDynArray;
@@ -177,13 +226,56 @@ begin
     uv := StrToInt(faceVertice[1]) - 1;
     normal := StrToInt(faceVertice[2]) - 1;
 
-    APolygon[i - 1] := TFaceVertex.Create(pos, uv, normal);
+//    APolygon[i - 1] := TFaceVertex.Create(pos, uv, normal);
+
+    APolygon[i - 1].IDPosition := pos;
+    APolygon[i - 1].IDUV := uv;
+    APolygon[i - 1].IDNormal := normal;
+
+//    APolygon[i - 1].IDPositionObject := pos;
+//    APolygon[i - 1].IDUVObject := uv;
+//    APolygon[i - 1].IDNormalObject := normal;
   end;
 
   APolygonTriangulated := TTriangulator.Triangulate<TFaceVertex>(APolygon);
 
   for ATriangle in APolygonTriangulated do
-    AddFace(ATriangle);
+  begin
+    if FCurrentMaterial = -1 then
+      raise Exception.Create('Material not defined.');
+
+    AFace.Vertices := ATriangle;
+    AFace.IDMaterial := FCurrentMaterial;
+    AFace.IDObject := FObjects.Count -1;
+    AddFace(AFace);
+  end;
+end;
+
+procedure TObjModel.ParseMaterial(const _ALine: String);
+var
+  ALineValues: TStringDynArray;
+  ALine: String;
+begin
+  ALine := StringReplace(_ALine, '  ', ' ', [rfReplaceAll]);
+  ALineValues := SplitString(ALine, ' ');
+
+
+  if not FMaterials.ContainsKey(ALineValues[1]) then
+    FMaterials.Add(ALineValues[1], FMaterials.Count);
+
+  FCurrentMaterial := FMaterials.Items[ALineValues[1]];
+end;
+
+procedure TObjModel.ParseObject(const _ALine: String);
+var
+  ALineValues: TStringDynArray;
+  ALine: String;
+begin
+  ALine := StringReplace(_ALine, '  ', ' ', [rfReplaceAll]);
+  ALineValues := SplitString(ALine, ' ');
+
+  FObjects.Add(ALineValues[1]);
+  FIsNewObject := True;
 end;
 
 procedure TObjModel.ParseVert(const _ALine: String);
@@ -287,11 +379,11 @@ end;
 
 { TFaceVertex }
 
-constructor TFaceVertex.Create(_AIdPosition, _AIdUV, _AIdNormal: Integer);
-begin
-  IDPosition := _AIdPosition;
-  IDUV := _AIdUV;
-  IDNormal := _AIdNormal;
-end;
+//constructor TFaceVertex.Create(_AIdPosition, _AIdUV, _AIdNormal: Integer);
+//begin
+//  IDPosition := _AIdPosition;
+//  IDUV := _AIdUV;
+//  IDNormal := _AIdNormal;
+//end;
 
 end.
