@@ -161,7 +161,7 @@ begin
 //    Image := stbi_load_from_memory(FileData, Length(FileData), Width, Height, Components, 3);
 
     filename :=  PAnsiChar(AnsiString(path));
-    stbi_set_flip_vertically_on_load(True);
+//    stbi_set_flip_vertically_on_load(True);
 
     //https://github.com/nothings/stb/blob/3a1174060a7dd4eb652d4e6854bc4cd98c159200/stb_image.h#L145
     Image := stbi_load(filename, Width, Height, Components, 3);
@@ -287,13 +287,13 @@ begin
 
   lightingShader:= TShader.Create('colors.vs', 'colors.fs');
 
-//  diffuseMap := createtexture('..\..\..\..\media\backpack\diffuse.jpg');
+  diffuseMap := createtexture('..\..\..\..\media\backpack\diffuse.jpg');
 //  specularMap := createtexture('..\..\..\..\media\backpack\specular.png');
-//  AModel := TModel.Create(TObjModelLoader.Create('..\..\..\..\media\backpack\backpack.obj'));
+  AModel := TModel.Create(TObjModelLoader.Create('..\..\..\..\media\backpack\backpack.obj'));
 
-  diffuseMap := createtexture('..\..\..\..\media\QuaterniusMonsters\Cthulhu_Texture.png');
+//  diffuseMap := createtexture('..\..\..\..\media\QuaterniusMonsters\Cthulhu_Texture.png');
 //    diffuseMap := createtexture('..\..\..\..\media\QuaterniusMonsters\2x2.bmp');
-  AModel := TModel.Create(TObjModelLoader.Create('..\..\..\..\media\QuaterniusMonsters\Cthulhu.obj'));
+//  AModel := TModel.Create(TObjModelLoader.Create('..\..\..\..\media\QuaterniusMonsters\Cthulhu.obj'));
 
 //  diffuseMap := createtexture('..\..\..\..\media\QuaterniusRPG\Wizard_Texture.png');
 //  AModel := TModel.Create(TObjModelLoader.Create('..\..\..\..\media\QuaterniusRPG\Wizard.obj'));
